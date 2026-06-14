@@ -1,0 +1,50 @@
+{
+  "users": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "INT",
+        "primary": true,
+        "not_null": true
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "primary": false,
+        "not_null": true
+      },
+      {
+        "name": "age",
+        "type": "INT",
+        "primary": false,
+        "not_null": false
+      },
+      {
+        "name": "score",
+        "type": "FLOAT",
+        "primary": false,
+        "not_null": false
+      }
+    ],
+    "rows": [
+      [
+        1,
+        "alice",
+        30,
+        95.5
+      ],
+      [
+        2,
+        "bob",
+        25,
+        80.0
+      ],
+      [
+        3,
+        "carol",
+        28,
+        88.0
+      ]
+    ]
+  }
+}

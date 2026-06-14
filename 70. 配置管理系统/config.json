@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "PyConf",
+    "debug": false
+  },
+  "db": {
+    "host": "localhost",
+    "port": 5432
+  },
+  "greeting": "Hello, ${app.name}!"
+}

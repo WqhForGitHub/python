@@ -1,0 +1,13 @@
+// 这是一个示例源文件
+let pi = 3.14;
+const max = 0xFF;
+fn add(a, b) {
+    return a + b;
+}
+
+if max >= 100 && pi != 0 {
+    /* 块注释
+       多行 */
+    let s = "hello\nworld";
+    let c = 'A';
+}

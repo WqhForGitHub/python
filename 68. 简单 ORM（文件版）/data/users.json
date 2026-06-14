@@ -1,0 +1,17 @@
+{
+  "auto_id": 3,
+  "rows": [
+    {
+      "name": "Alice",
+      "age": 31,
+      "email": "a@x.com",
+      "id": 1
+    },
+    {
+      "name": "Carol",
+      "age": 40,
+      "email": null,
+      "id": 3
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "auto_id": 2,
+  "rows": [
+    {
+      "title": "Hello",
+      "body": "first",
+      "user_id": 1,
+      "created": "2026-06-14",
+      "id": 1
+    },
+    {
+      "title": "World",
+      "body": "second",
+      "user_id": 2,
+      "created": "2026-06-14",
+      "id": 2
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "PyConf",
+    "debug": "true"
+  },
+  "db": {
+    "host": "override.local",
+    "port": 9999,
+    "user": "admin"
+  },
+  "greeting": "Hello, ${app.name}!"
+}
