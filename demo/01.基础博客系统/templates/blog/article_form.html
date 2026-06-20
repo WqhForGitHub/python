@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}编辑文章{% else %}发布文章{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">{% if form.instance.pk %}编辑文章{% else %}发布新文章{% endif %}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">{{ form.title.label }}</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="text-danger small mt-1">{{ form.title.errors|join:" " }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">{{ form.body.label }}</label>
+                {{ form.body }}
+                {% if form.body.errors %}
+                    <div class="text-danger small mt-1">{{ form.body.errors|join:" " }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">
+                {% if form.instance.pk %}保存修改{% else %}发布文章{% endif %}
+            </button>
+            <a href="{% url 'blog:article_list' %}" class="btn btn-outline-secondary">取消</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

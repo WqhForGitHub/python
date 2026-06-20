@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <h2>{{ article.title }}</h2>
+    <p class="article-meta mb-4">
+        作者: {{ article.author.username }} |
+        发布于: {{ article.created_at|date:"Y-m-d H:i" }} |
+        更新于: {{ article.updated_at|date:"Y-m-d H:i" }}
+    </p>
+
+    <div class="article-body mb-4">
+        {{ article.body|linebreaksbr }}
+    </div>
+
+    {% if user.is_authenticated and user == article.author %}
+    <div class="mb-4">
+        <a href="{% url 'blog:article_edit' article.pk %}" class="btn btn-warning btn-sm">编辑</a>
+        <a href="{% url 'blog:article_delete' article.pk %}" class="btn btn-danger btn-sm">删除</a>
+    </div>
+    {% endif %}
+</article>
+
+<hr>
+
+<h4>评论 ({{ comments.count }})</h4>
+
+{% if comments %}
+    {% for comment in comments %}
+    <div class="comment-item">
+        <strong>{{ comment.author.username }}</strong>
+        <span class="article-meta"> · {{ comment.created_at|date:"Y-m-d H:i" }}</span>
+        <p class="mb-0">{{ comment.body|linebreaksbr }}</p>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">还没有评论，来说两句吧～</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+<h5 class="mt-4">发表评论</h5>
+<form method="post" action="{% url 'blog:add_comment' article.pk %}">
+    {% csrf_token %}
+    {{ comment_form.body }}
+    <button type="submit" class="btn btn-primary mt-2">提交评论</button>
+</form>
+{% else %}
+<p class="mt-4">
+    <a href="{% url 'accounts:login' %}">登录</a> 后可发表评论。
+</p>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{% url 'blog:article_list' %}" class="btn btn-outline-secondary btn-sm">&larr; 返回列表</a>
+</div>
+{% endblock %}

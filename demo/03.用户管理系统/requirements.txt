@@ -1,0 +1,8 @@
+[project]
+name = "usermanage-project"
+version = "0.1.0"
+description = "用户管理系统 - Django Demo"
+requires-python = ">=3.10"
+dependencies = [
+    "Django>=5.0",
+]

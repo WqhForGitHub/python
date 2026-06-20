@@ -1,0 +1,33 @@
+/* 用户管理系统自定义样式 */
+body {
+    padding-top: 70px;
+    padding-bottom: 30px;
+    background-color: #f5f7fa;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.65rem 0.75rem;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.btn [class^="bi-"], .btn [class*=" bi-"] {
+    margin-right: 2px;
+}
+
+footer {
+    font-size: 0.85rem;
+}

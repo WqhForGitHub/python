@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}登录 · 用户管理系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-4"><i class="bi bi-box-arrow-in-right"></i> 用户登录</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger py-2">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.username.label }}</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.password.label }}</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}<div class="text-danger small">{{ form.password.errors }}</div>{% endif %}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i> 登录</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <span class="text-muted">还没有账号？</span>
+                    <a href="{% url 'users:register' %}">立即注册</a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center text-muted small mt-3">
+            <i class="bi bi-info-circle"></i>
+            演示用：可通过 <code>createsuperuser</code> 创建管理员账号登录
+        </p>
+    </div>
+</div>
+{% endblock %}
