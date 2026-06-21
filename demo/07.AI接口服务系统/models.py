@@ -2,6 +2,7 @@
 
 AITask 记录异步任务的状态与结果。
 """
+
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, Integer, String, Text

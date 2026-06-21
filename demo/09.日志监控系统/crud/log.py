@@ -1,4 +1,5 @@
 """日志查询 + 性能统计 CRUD。"""
+
 from datetime import datetime, timedelta
 
 from sqlalchemy import func
@@ -8,7 +9,11 @@ import models
 
 
 def get_log_by_id(db: Session, request_id: str) -> models.RequestLog | None:
-    return db.query(models.RequestLog).filter(models.RequestLog.request_id == request_id).first()
+    return (
+        db.query(models.RequestLog)
+        .filter(models.RequestLog.request_id == request_id)
+        .first()
+    )
 
 
 def list_logs(
@@ -29,15 +34,11 @@ def list_logs(
         stmt = stmt.filter(models.RequestLog.path.like(f"%{path}%"))
     if since_minutes:
         stmt = stmt.filter(
-            models.RequestLog.created_at >= datetime.utcnow() - timedelta(minutes=since_minutes)
+            models.RequestLog.created_at
+            >= datetime.utcnow() - timedelta(minutes=since_minutes)
         )
     total = stmt.count()
-    items = (
-        stmt.order_by(models.RequestLog.id.desc())
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
+    items = stmt.order_by(models.RequestLog.id.desc()).offset(skip).limit(limit).all()
     return items, total
 
 
@@ -48,8 +49,13 @@ def get_summary(db: Session, since_minutes: int = 60) -> dict:
     total = base.count()
     if total == 0:
         return {
-            "total": 0, "success": 0, "client_error": 0, "server_error": 0,
-            "avg_duration_ms": 0.0, "p95_duration_ms": 0.0, "max_duration_ms": 0,
+            "total": 0,
+            "success": 0,
+            "client_error": 0,
+            "server_error": 0,
+            "avg_duration_ms": 0.0,
+            "p95_duration_ms": 0.0,
+            "max_duration_ms": 0,
         }
     success = base.filter(models.RequestLog.status_code < 400).count()
     client_error = base.filter(
@@ -57,12 +63,18 @@ def get_summary(db: Session, since_minutes: int = 60) -> dict:
     ).count()
     server_error = base.filter(models.RequestLog.status_code >= 500).count()
 
-    avg = db.query(func.avg(models.RequestLog.duration_ms)).filter(
-        models.RequestLog.created_at >= since
-    ).scalar() or 0.0
-    max_dur = db.query(func.max(models.RequestLog.duration_ms)).filter(
-        models.RequestLog.created_at >= since
-    ).scalar() or 0
+    avg = (
+        db.query(func.avg(models.RequestLog.duration_ms))
+        .filter(models.RequestLog.created_at >= since)
+        .scalar()
+        or 0.0
+    )
+    max_dur = (
+        db.query(func.max(models.RequestLog.duration_ms))
+        .filter(models.RequestLog.created_at >= since)
+        .scalar()
+        or 0
+    )
 
     # P95：取排序后第 95% 位置的记录
     all_durations = (
@@ -116,14 +128,17 @@ def get_path_stats(db: Session, since_minutes: int = 60, limit: int = 20) -> lis
                 models.RequestLog.status_code >= 400,
                 models.RequestLog.created_at >= since,
             )
-            .scalar() or 0
+            .scalar()
+            or 0
         )
-        result.append({
-            "path": path,
-            "method": method,
-            "count": count,
-            "avg_duration_ms": round(float(avg), 2),
-            "max_duration_ms": int(max_dur),
-            "error_count": error_count,
-        })
+        result.append(
+            {
+                "path": path,
+                "method": method,
+                "count": count,
+                "avg_duration_ms": round(float(avg), 2),
+                "max_duration_ms": int(max_dur),
+                "error_count": error_count,
+            }
+        )
     return result

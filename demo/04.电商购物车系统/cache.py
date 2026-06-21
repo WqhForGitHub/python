@@ -3,6 +3,7 @@
 为便于无 Redis 环境运行 Demo，启动时若连不上 Redis，则自动降级为
 进程内字典缓存（功能一致，但不具备分布式能力）。
 """
+
 import json
 import threading
 import time

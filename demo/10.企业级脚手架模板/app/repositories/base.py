@@ -1,4 +1,5 @@
 """泛型 Repository 基类，提供通用 CRUD。"""
+
 from typing import Any, Generic, TypeVar
 
 from sqlalchemy import select

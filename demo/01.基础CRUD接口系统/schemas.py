@@ -4,6 +4,7 @@
 1. 请求体校验 (Create / Update)
 2. 响应模型序列化 (Read)，避免暴露 password 等敏感字段
 """
+
 from datetime import datetime
 from typing import Optional
 
@@ -15,6 +16,7 @@ from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator
 # ============================================================
 class UserBase(BaseModel):
     """用户公共字段。"""
+
     username: str = Field(
         ...,
         min_length=3,
@@ -28,6 +30,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     """创建用户请求体。"""
+
     password: str = Field(
         ...,
         min_length=6,
@@ -48,6 +51,7 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     """更新用户请求体（所有字段可选）。"""
+
     username: Optional[str] = Field(
         None,
         min_length=3,
@@ -77,6 +81,7 @@ class UserUpdate(BaseModel):
 
 class UserRead(UserBase):
     """用户响应模型（不含密码）。"""
+
     id: int
     created_at: datetime
 
@@ -88,6 +93,7 @@ class UserRead(UserBase):
 # ============================================================
 class ArticleBase(BaseModel):
     """文章公共字段。"""
+
     title: str = Field(
         ...,
         min_length=1,
@@ -105,17 +111,22 @@ class ArticleBase(BaseModel):
 
 class ArticleCreate(ArticleBase):
     """创建文章请求体。"""
+
     author_id: int = Field(..., gt=0, description="作者用户 ID", examples=[1])
 
 
 class ArticleUpdate(BaseModel):
     """更新文章请求体（所有字段可选）。"""
-    title: Optional[str] = Field(None, min_length=1, max_length=100, description="文章标题")
+
+    title: Optional[str] = Field(
+        None, min_length=1, max_length=100, description="文章标题"
+    )
     content: Optional[str] = Field(None, min_length=1, description="文章正文")
 
 
 class ArticleRead(ArticleBase):
     """文章响应模型。"""
+
     id: int
     author_id: int
     created_at: datetime

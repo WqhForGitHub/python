@@ -6,6 +6,7 @@
 
 二者实现统一的 StorageBackend 接口：save / open / delete / exists。
 """
+
 import shutil
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -88,9 +89,7 @@ class MinIOStorage(StorageBackend):
     def save(self, key: str, data: bytes) -> None:
         from io import BytesIO
 
-        self.client.put_object(
-            self.bucket, key, BytesIO(data), length=len(data)
-        )
+        self.client.put_object(self.bucket, key, BytesIO(data), length=len(data))
 
     def open(self, key: str) -> bytes:
         resp = self.client.get_object(self.bucket, key)

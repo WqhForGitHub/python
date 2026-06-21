@@ -1,4 +1,5 @@
 """user-service 配置。"""
+
 import os
 from pathlib import Path
 

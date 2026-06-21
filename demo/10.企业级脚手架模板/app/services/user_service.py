@@ -1,4 +1,5 @@
 """用户业务：查询 / 更新 / 删除 / 分配角色。"""
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError

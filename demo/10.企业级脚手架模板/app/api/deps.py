@@ -1,4 +1,5 @@
 """API 层依赖：当前用户 / RBAC 权限校验。"""
+
 from typing import Callable
 
 from fastapi import Depends, status

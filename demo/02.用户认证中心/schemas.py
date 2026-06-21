@@ -4,6 +4,7 @@
 1. 请求体校验（注册 / 登录 / 更新 / 分配角色权限等）
 2. 响应模型序列化，避免暴露 password_hash 等敏感字段
 """
+
 from datetime import datetime
 from typing import Optional
 
@@ -54,7 +55,9 @@ class TokenPair(BaseModel):
     """登录 / 刷新成功后返回的令牌对。"""
 
     access_token: str = Field(..., description="访问令牌，有效期较短")
-    refresh_token: str = Field(..., description="刷新令牌，有效期较长，用于换取新的令牌对")
+    refresh_token: str = Field(
+        ..., description="刷新令牌，有效期较长，用于换取新的令牌对"
+    )
     token_type: str = Field("bearer", description="令牌类型")
     expires_in: int = Field(..., description="access_token 有效期（秒）")
 
@@ -152,7 +155,9 @@ class UserUpdate(BaseModel):
     """更新用户请求体（所有字段可选）。"""
 
     email: Optional[EmailStr] = Field(None, description="邮箱地址")
-    password: Optional[str] = Field(None, min_length=6, max_length=32, description="新密码")
+    password: Optional[str] = Field(
+        None, min_length=6, max_length=32, description="新密码"
+    )
     is_active: Optional[bool] = Field(None, description="是否启用")
 
     @field_validator("password")
@@ -168,4 +173,6 @@ class UserUpdate(BaseModel):
 
 
 class AssignRoles(BaseModel):
-    role_ids: list[int] = Field(..., min_length=1, description="角色 ID 列表（全量覆盖）")
+    role_ids: list[int] = Field(
+        ..., min_length=1, description="角色 ID 列表（全量覆盖）"
+    )

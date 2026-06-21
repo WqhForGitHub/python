@@ -1,4 +1,5 @@
 """评论 CRUD 操作（异步）。"""
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,9 +14,7 @@ async def get_comment(db: AsyncSession, comment_id: int) -> models.Comment | Non
     return result.scalar_one_or_none()
 
 
-async def list_comments_by_post(
-    db: AsyncSession, post_id: int
-) -> list[models.Comment]:
+async def list_comments_by_post(db: AsyncSession, post_id: int) -> list[models.Comment]:
     result = await db.execute(
         select(models.Comment)
         .where(models.Comment.post_id == post_id)

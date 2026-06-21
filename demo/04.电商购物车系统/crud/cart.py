@@ -4,6 +4,7 @@
     key  : cart:{user_id}
     value: Hash { product_id: quantity }
 """
+
 from decimal import Decimal
 
 from sqlalchemy.orm import Session

@@ -1,4 +1,5 @@
 """安全工具：密码哈希 + JWT 编解码。"""
+
 import hashlib
 import secrets
 from datetime import datetime, timedelta
@@ -20,12 +21,19 @@ def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
 
-def _create_token(data: dict[str, Any], expires_delta: timedelta, token_type: str) -> tuple[str, str]:
+def _create_token(
+    data: dict[str, Any], expires_delta: timedelta, token_type: str
+) -> tuple[str, str]:
     iat = datetime.utcnow()
     expire = iat + expires_delta
     jti = secrets.token_hex(16)
     to_encode = {**data, "iat": iat, "exp": expire, "type": token_type, "jti": jti}
-    return jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM), jti
+    return (
+        jwt.encode(
+            to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM
+        ),
+        jti,
+    )
 
 
 def create_access_token(sub: str, username: str, roles: list[str]) -> str:
@@ -46,7 +54,9 @@ def create_refresh_token(sub: str) -> tuple[str, str]:
 
 
 def decode_token(token: str) -> dict[str, Any]:
-    return jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+    return jwt.decode(
+        token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
+    )
 
 
 def hash_token(token: str) -> str:

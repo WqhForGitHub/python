@@ -1,4 +1,5 @@
 """AI 任务 CRUD 操作。"""
+
 import uuid
 from datetime import datetime
 
@@ -48,9 +49,7 @@ def mark_running(db: Session, task: models.AITask) -> None:
     db.commit()
 
 
-def mark_succeeded(
-    db: Session, task: models.AITask, result: str, model: str
-) -> None:
+def mark_succeeded(db: Session, task: models.AITask, result: str, model: str) -> None:
     task.status = "succeeded"
     task.result = result
     task.model = model

@@ -8,6 +8,7 @@
 - 凭据校验接口（供 auth-service 调用）
 - 启动时向网关注册，后台心跳保活
 """
+
 import asyncio
 import sys
 from contextlib import asynccontextmanager
@@ -50,17 +51,26 @@ def _seed() -> None:
 async def lifespan(app: FastAPI):
     # 启动：注册 + 心跳
     await service_client.register_to_gateway(
-        config.GATEWAY_URL, config.SERVICE_NAME, config.SERVICE_HOST, config.SERVICE_PORT
+        config.GATEWAY_URL,
+        config.SERVICE_NAME,
+        config.SERVICE_HOST,
+        config.SERVICE_PORT,
     )
     hb = asyncio.create_task(
         service_client.heartbeat_loop(
-            config.GATEWAY_URL, config.SERVICE_NAME, config.SERVICE_HOST, config.SERVICE_PORT
+            config.GATEWAY_URL,
+            config.SERVICE_NAME,
+            config.SERVICE_HOST,
+            config.SERVICE_PORT,
         )
     )
     yield
     hb.cancel()
     await service_client.deregister_from_gateway(
-        config.GATEWAY_URL, config.SERVICE_NAME, config.SERVICE_HOST, config.SERVICE_PORT
+        config.GATEWAY_URL,
+        config.SERVICE_NAME,
+        config.SERVICE_HOST,
+        config.SERVICE_PORT,
     )
 
 
@@ -78,7 +88,9 @@ def health():
 
 
 # 供 auth-service 远程调用的凭据校验接口（内部接口）
-@app.post("/internal/verify", response_model=schemas.UserRead, summary="凭据校验（内部）")
+@app.post(
+    "/internal/verify", response_model=schemas.UserRead, summary="凭据校验（内部）"
+)
 def verify_credentials(body: schemas.LoginRequest, db: Session = Depends(get_db)):
     user = crud.verify_credentials(db, body.username, body.password)
     if user is None:
@@ -86,7 +98,9 @@ def verify_credentials(body: schemas.LoginRequest, db: Session = Depends(get_db)
     return user
 
 
-@app.get("/internal/{user_id}", response_model=schemas.UserRead, summary="按 ID 查询（内部）")
+@app.get(
+    "/internal/{user_id}", response_model=schemas.UserRead, summary="按 ID 查询（内部）"
+)
 def internal_get_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id)
     if user is None:

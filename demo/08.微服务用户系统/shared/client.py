@@ -5,6 +5,7 @@
 - 注销：服务关闭时 POST /registry/deregister（best-effort）
 - 调用：discover 后用 httpx 转发
 """
+
 import asyncio
 
 import httpx

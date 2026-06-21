@@ -1,4 +1,5 @@
 """房间 / 在线状态相关 HTTP 接口。"""
+
 from fastapi import APIRouter
 
 import manager

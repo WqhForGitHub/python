@@ -8,6 +8,7 @@
 - Token 校验接口（供网关 / 其他服务调用）
 - 启动时向网关注册，后台心跳保活
 """
+
 import asyncio
 import sys
 from contextlib import asynccontextmanager
@@ -28,17 +29,26 @@ import shared.models as schemas  # noqa: E402
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await service_client.register_to_gateway(
-        config.GATEWAY_URL, config.SERVICE_NAME, config.SERVICE_HOST, config.SERVICE_PORT
+        config.GATEWAY_URL,
+        config.SERVICE_NAME,
+        config.SERVICE_HOST,
+        config.SERVICE_PORT,
     )
     hb = asyncio.create_task(
         service_client.heartbeat_loop(
-            config.GATEWAY_URL, config.SERVICE_NAME, config.SERVICE_HOST, config.SERVICE_PORT
+            config.GATEWAY_URL,
+            config.SERVICE_NAME,
+            config.SERVICE_HOST,
+            config.SERVICE_PORT,
         )
     )
     yield
     hb.cancel()
     await service_client.deregister_from_gateway(
-        config.GATEWAY_URL, config.SERVICE_NAME, config.SERVICE_HOST, config.SERVICE_PORT
+        config.GATEWAY_URL,
+        config.SERVICE_NAME,
+        config.SERVICE_HOST,
+        config.SERVICE_PORT,
     )
 
 

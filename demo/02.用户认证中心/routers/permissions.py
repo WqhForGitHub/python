@@ -1,4 +1,5 @@
 """权限管理路由（需 permission:manage 权限）。"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 

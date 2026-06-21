@@ -1,4 +1,5 @@
 """Pydantic 模型。"""
+
 from datetime import datetime
 from typing import Literal
 

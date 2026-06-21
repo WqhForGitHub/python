@@ -1,4 +1,5 @@
 """Pydantic 模型。"""
+
 from datetime import datetime
 from typing import Optional
 
@@ -23,9 +24,9 @@ class RequestLogRead(BaseModel):
 
 class StatsSummary(BaseModel):
     total: int
-    success: int          # 2xx
-    client_error: int     # 4xx
-    server_error: int     # 5xx
+    success: int  # 2xx
+    client_error: int  # 4xx
+    server_error: int  # 5xx
     avg_duration_ms: float
     p95_duration_ms: float
     max_duration_ms: int

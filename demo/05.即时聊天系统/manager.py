@@ -6,6 +6,7 @@
 - 私聊 / 群聊消息分发
 - 加入 / 离开房间
 """
+
 import json
 from datetime import datetime
 from typing import Any
@@ -114,7 +115,9 @@ class ConnectionManager:
         a, b = sorted((u1, u2))
         return f"dm:{a}_{b}"
 
-    async def send_private(self, from_user: int, to_user: int, content: str) -> dict[str, Any]:
+    async def send_private(
+        self, from_user: int, to_user: int, content: str
+    ) -> dict[str, Any]:
         """私聊：投递给接收者，并把发送者自己也回显一份。"""
         room = self.dm_room(from_user, to_user)
         ts = datetime.utcnow().isoformat() + "Z"
@@ -134,7 +137,9 @@ class ConnectionManager:
         await self.send_personal(from_user, echo)
         return echo
 
-    async def send_group(self, from_user: int, room: str, content: str) -> dict[str, Any]:
+    async def send_group(
+        self, from_user: int, room: str, content: str
+    ) -> dict[str, Any]:
         """群聊：广播给房间内所有人（含发送者）。"""
         if from_user not in self.rooms.get(room, set()):
             # 自动加入房间

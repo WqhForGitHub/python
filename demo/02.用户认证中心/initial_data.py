@@ -8,6 +8,7 @@
 
 可通过环境变量覆盖管理员账号密码（见 config.py）。
 """
+
 from sqlalchemy.orm import Session
 
 import config
@@ -18,19 +19,18 @@ import models
 from database import SessionLocal
 from security import hash_password
 
-
 # 预置权限：(code, name, description)
 DEFAULT_PERMISSIONS = [
-    ("user:read",         "查看用户",   "查看用户列表与详情"),
-    ("user:write",        "编辑用户",   "修改用户信息"),
-    ("user:delete",       "删除用户",   "删除用户"),
-    ("user:assign_role",  "分配角色",   "为用户分配或移除角色"),
-    ("role:read",         "查看角色",   "查看角色列表与详情"),
-    ("role:write",        "编辑角色",   "创建与修改角色、分配权限"),
-    ("role:delete",       "删除角色",   "删除角色"),
-    ("permission:manage", "管理权限",   "创建与查看权限"),
-    ("article:read",      "查看文章",   "查看文章（示例受保护资源）"),
-    ("article:write",     "编辑文章",   "创建与修改文章（示例受保护资源）"),
+    ("user:read", "查看用户", "查看用户列表与详情"),
+    ("user:write", "编辑用户", "修改用户信息"),
+    ("user:delete", "删除用户", "删除用户"),
+    ("user:assign_role", "分配角色", "为用户分配或移除角色"),
+    ("role:read", "查看角色", "查看角色列表与详情"),
+    ("role:write", "编辑角色", "创建与修改角色、分配权限"),
+    ("role:delete", "删除角色", "删除角色"),
+    ("permission:manage", "管理权限", "创建与查看权限"),
+    ("article:read", "查看文章", "查看文章（示例受保护资源）"),
+    ("article:write", "编辑文章", "创建与修改文章（示例受保护资源）"),
 ]
 
 # 普通用户角色拥有的权限

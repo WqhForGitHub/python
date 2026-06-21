@@ -1,4 +1,5 @@
 """用户 / 角色 / 权限 仓库。"""
+
 from sqlalchemy import or_, select
 from sqlalchemy.orm import selectinload
 
@@ -17,9 +18,7 @@ class UserRepository(BaseRepository[User]):
         return result.scalar_one_or_none()
 
     async def get_by_username(self, username: str) -> User | None:
-        result = await self.db.execute(
-            select(User).where(User.username == username)
-        )
+        result = await self.db.execute(select(User).where(User.username == username))
         return result.scalar_one_or_none()
 
     async def get_by_email(self, email: str) -> User | None:

@@ -1,4 +1,5 @@
 """v1 路由聚合。"""
+
 from fastapi import APIRouter
 
 from app.api.v1 import auth, users

@@ -1,4 +1,5 @@
 """user-service ORM 模型。"""
+
 from datetime import datetime
 
 from passlib.context import CryptContext

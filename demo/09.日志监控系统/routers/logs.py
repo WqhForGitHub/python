@@ -1,4 +1,5 @@
 """日志查询与性能统计接口。"""
+
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
@@ -25,8 +26,13 @@ def list_logs(
     db: Session = Depends(get_db),
 ):
     items, total = crud.log.list_logs(
-        db, skip=skip, limit=limit, method=method,
-        status_code=status_code, path=path, since_minutes=since_minutes,
+        db,
+        skip=skip,
+        limit=limit,
+        method=method,
+        status_code=status_code,
+        path=path,
+        since_minutes=since_minutes,
     )
     return {"items": items, "total": total, "skip": skip, "limit": limit}
 
@@ -40,6 +46,7 @@ def get_log(request_id: str, db: Session = Depends(get_db)):
     log = crud.log.get_log_by_id(db, request_id)
     if log is None:
         from fastapi import HTTPException
+
         raise HTTPException(status_code=404, detail="日志不存在")
     return log
 

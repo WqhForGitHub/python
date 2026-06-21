@@ -2,6 +2,7 @@
 
 无 Redis 时降级为 None，相关功能（如 refresh token 缓存）自动跳过。
 """
+
 import redis.asyncio as aioredis
 
 from app.core.config import settings

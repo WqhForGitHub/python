@@ -1,4 +1,5 @@
 """用户 CRUD 操作。"""
+
 from sqlalchemy.orm import Session
 
 import models
@@ -38,7 +39,9 @@ def create_user(db: Session, user_in: schemas.UserCreate) -> models.User:
     return db_user
 
 
-def update_user(db: Session, db_user: models.User, user_in: schemas.UserUpdate) -> models.User:
+def update_user(
+    db: Session, db_user: models.User, user_in: schemas.UserUpdate
+) -> models.User:
     """更新用户。仅更新请求体中非 None 的字段。"""
     update_data = user_in.model_dump(exclude_unset=True)
     for field, value in update_data.items():

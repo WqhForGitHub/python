@@ -1,4 +1,5 @@
 """商品路由（带 Redis 缓存）。"""
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 

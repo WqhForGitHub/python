@@ -6,6 +6,7 @@
 
 另外 RefreshToken 表用于持久化刷新令牌，支持令牌轮转与吊销（登出）。
 """
+
 from datetime import datetime
 
 from sqlalchemy import (
@@ -21,7 +22,6 @@ from sqlalchemy.orm import relationship
 
 from database import Base
 
-
 # ------------------------------------------------------------------
 # 关联表（多对多）
 # ------------------------------------------------------------------
@@ -29,16 +29,27 @@ from database import Base
 user_roles = Table(
     "user_roles",
     Base.metadata,
-    Column("user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True),
-    Column("role_id", Integer, ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column(
+        "role_id", Integer, ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True
+    ),
 )
 
 # 角色 - 权限
 role_permissions = Table(
     "role_permissions",
     Base.metadata,
-    Column("role_id", Integer, ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True),
-    Column("permission_id", Integer, ForeignKey("permissions.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "role_id", Integer, ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column(
+        "permission_id",
+        Integer,
+        ForeignKey("permissions.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -73,7 +84,9 @@ class Role(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     users = relationship("User", secondary=user_roles, back_populates="roles")
-    permissions = relationship("Permission", secondary=role_permissions, back_populates="roles")
+    permissions = relationship(
+        "Permission", secondary=role_permissions, back_populates="roles"
+    )
 
 
 # ------------------------------------------------------------------
@@ -84,11 +97,13 @@ class Permission(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     code = Column(String(64), unique=True, index=True, nullable=False)  # 如 user:read
-    name = Column(String(100), nullable=False)                          # 人类可读名称
+    name = Column(String(100), nullable=False)  # 人类可读名称
     description = Column(String(255), default="", nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    roles = relationship("Role", secondary=role_permissions, back_populates="permissions")
+    roles = relationship(
+        "Role", secondary=role_permissions, back_populates="permissions"
+    )
 
 
 # ------------------------------------------------------------------
@@ -105,9 +120,13 @@ class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    jti = Column(String(64), unique=True, index=True, nullable=False)        # JWT ID
-    token_hash = Column(String(255), unique=True, index=True, nullable=False)  # 哈希后存储
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    jti = Column(String(64), unique=True, index=True, nullable=False)  # JWT ID
+    token_hash = Column(
+        String(255), unique=True, index=True, nullable=False
+    )  # 哈希后存储
     expires_at = Column(DateTime, nullable=False)
     revoked = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

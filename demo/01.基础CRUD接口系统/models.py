@@ -4,6 +4,7 @@
 - User：用户
 - Article：文章，外键关联到 User
 """
+
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
@@ -38,7 +39,9 @@ class Article(Base):
     title = Column(String(100), nullable=False, index=True)
     content = Column(Text, nullable=False)
 
-    author_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    author_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     author = relationship("User", back_populates="articles")
 
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

@@ -11,6 +11,7 @@
 - 统一响应包装 + 全局异常处理
 - 版本化路由（/api/v1）
 """
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI

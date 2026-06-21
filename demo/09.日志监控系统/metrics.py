@@ -2,6 +2,7 @@
 
 暴露 /metrics 端点供 Prometheus 抓取。
 """
+
 from prometheus_client import Counter, Histogram, generate_latest
 
 # 请求总数（按 method / path / status）

@@ -1,4 +1,5 @@
 """应用配置。"""
+
 import os
 from pathlib import Path
 

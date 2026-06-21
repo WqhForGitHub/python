@@ -1,4 +1,5 @@
 """auth-service 配置。"""
+
 import os
 
 SERVICE_NAME = "auth-service"

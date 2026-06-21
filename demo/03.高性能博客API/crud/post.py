@@ -2,6 +2,7 @@
 
 包含分页查询、按标签筛选、浏览量自增等功能。
 """
+
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -65,7 +66,11 @@ async def create_post(db: AsyncSession, post_in: schemas.PostCreate) -> models.P
     # 关联标签
     if post_in.tag_ids:
         tags = (
-            (await db.execute(select(models.Tag).where(models.Tag.id.in_(post_in.tag_ids))))
+            (
+                await db.execute(
+                    select(models.Tag).where(models.Tag.id.in_(post_in.tag_ids))
+                )
+            )
             .scalars()
             .all()
         )
@@ -115,8 +120,8 @@ async def delete_post(db: AsyncSession, post: models.Post) -> None:
 async def increment_view(db: AsyncSession, post_id: int) -> None:
     """浏览量自增（避免读改写竞争）。"""
     await db.execute(
-        update(models.Post).where(models.Post.id == post_id).values(
-            view_count=models.Post.view_count + 1
-        )
+        update(models.Post)
+        .where(models.Post.id == post_id)
+        .values(view_count=models.Post.view_count + 1)
     )
     await db.commit()

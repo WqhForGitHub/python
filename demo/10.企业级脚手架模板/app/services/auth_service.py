@@ -1,4 +1,5 @@
 """认证业务：注册 / 登录 / 刷新 / 登出。"""
+
 from datetime import datetime
 
 from jose import JWTError

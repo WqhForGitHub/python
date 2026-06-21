@@ -6,6 +6,7 @@ RefreshToken 持久化于数据库，用于：
 - 登出时吊销令牌
 - 批量吊销某用户的所有令牌
 """
+
 from datetime import datetime
 
 from sqlalchemy.orm import Session

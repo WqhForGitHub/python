@@ -1,4 +1,5 @@
 """认证路由：注册 / 登录 / 刷新 / 当前用户。"""
+
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession

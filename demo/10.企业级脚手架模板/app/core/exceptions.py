@@ -1,4 +1,5 @@
 """自定义异常 + 全局异常处理。"""
+
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -7,7 +8,9 @@ from fastapi.responses import JSONResponse
 class AppException(Exception):
     """业务异常基类。"""
 
-    def __init__(self, message: str, code: str = "BUSINESS_ERROR", status_code: int = 400):
+    def __init__(
+        self, message: str, code: str = "BUSINESS_ERROR", status_code: int = 400
+    ):
         self.message = message
         self.code = code
         self.status_code = status_code
@@ -16,7 +19,9 @@ class AppException(Exception):
 
 class NotFoundError(AppException):
     def __init__(self, message: str = "资源不存在"):
-        super().__init__(message, code="NOT_FOUND", status_code=status.HTTP_404_NOT_FOUND)
+        super().__init__(
+            message, code="NOT_FOUND", status_code=status.HTTP_404_NOT_FOUND
+        )
 
 
 class ConflictError(AppException):
@@ -26,7 +31,9 @@ class ConflictError(AppException):
 
 class AuthError(AppException):
     def __init__(self, message: str = "认证失败"):
-        super().__init__(message, code="AUTH_ERROR", status_code=status.HTTP_401_UNAUTHORIZED)
+        super().__init__(
+            message, code="AUTH_ERROR", status_code=status.HTTP_401_UNAUTHORIZED
+        )
 
 
 class PermissionDeniedError(AppException):
@@ -48,7 +55,11 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def handle_validation(_: Request, exc: RequestValidationError):
         return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            content={"code": "VALIDATION_ERROR", "message": "参数校验失败", "details": exc.errors()},
+            content={
+                "code": "VALIDATION_ERROR",
+                "message": "参数校验失败",
+                "details": exc.errors(),
+            },
         )
 
     @app.exception_handler(HTTPException)

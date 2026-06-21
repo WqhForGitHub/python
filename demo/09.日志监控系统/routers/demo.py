@@ -2,6 +2,7 @@
 
 访问这些接口会产生 RequestLog 与 Prometheus 指标，便于演示监控效果。
 """
+
 import asyncio
 import random
 

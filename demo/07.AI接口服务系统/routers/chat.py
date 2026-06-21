@@ -1,4 +1,5 @@
 """同步聊天接口（实时返回 LLM 回复，带限流）。"""
+
 from fastapi import APIRouter, Depends
 
 import limiter

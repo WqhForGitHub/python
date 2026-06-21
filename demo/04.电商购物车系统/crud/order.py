@@ -1,4 +1,5 @@
 """订单 CRUD 操作。"""
+
 import time
 import uuid
 
@@ -40,9 +41,7 @@ def list_orders(
     return items, total
 
 
-def create_order_from_cart(
-    db: Session, user_id: int, address: str
-) -> models.Order:
+def create_order_from_cart(db: Session, user_id: int, address: str) -> models.Order:
     """从购物车生成订单。
 
     流程：
@@ -60,9 +59,7 @@ def create_order_from_cart(
     for item in cart.items:
         ok = crud.product.decrease_stock(db, item.product_id, item.quantity)
         if not ok:
-            raise ValueError(
-                f"商品 {item.product_name} 库存不足，下单失败"
-            )
+            raise ValueError(f"商品 {item.product_name} 库存不足，下单失败")
 
     total_amount = cart.total_amount
     order = models.Order(

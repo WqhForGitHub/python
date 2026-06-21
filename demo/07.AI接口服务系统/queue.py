@@ -7,6 +7,7 @@
 
 应用启动时通过 lifespan 启动 worker，关闭时取消。
 """
+
 import asyncio
 import threading
 from datetime import datetime

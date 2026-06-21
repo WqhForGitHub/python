@@ -1,9 +1,12 @@
 """认证相关 Schema。"""
+
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 class UserRegister(BaseModel):
-    username: str = Field(..., min_length=3, max_length=20, pattern=r"^[A-Za-z0-9_]+$", examples=["alice"])
+    username: str = Field(
+        ..., min_length=3, max_length=20, pattern=r"^[A-Za-z0-9_]+$", examples=["alice"]
+    )
     email: EmailStr = Field(..., examples=["alice@example.com"])
     password: str = Field(..., min_length=6, max_length=32, examples=["Secret123"])
 

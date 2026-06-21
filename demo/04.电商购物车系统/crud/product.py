@@ -1,4 +1,5 @@
 """商品 CRUD 操作（带 Redis 缓存）。"""
+
 from decimal import Decimal
 
 from sqlalchemy import func, select

@@ -1,4 +1,5 @@
 """应用配置。"""
+
 import os
 from pathlib import Path
 
@@ -31,7 +32,20 @@ MINIO_SECURE = os.getenv("MINIO_SECURE", "false").lower() == "true"
 # ============================================================
 MAX_UPLOAD_SIZE = int(os.getenv("MAX_UPLOAD_SIZE", str(10 * 1024 * 1024)))  # 10MB
 ALLOWED_EXTENSIONS = {
-    ".jpg", ".jpeg", ".png", ".gif", ".webp",  # 图片
-    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",  # 文档
-    ".txt", ".md", ".csv", ".zip",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".webp",  # 图片
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",  # 文档
+    ".txt",
+    ".md",
+    ".csv",
+    ".zip",
 }

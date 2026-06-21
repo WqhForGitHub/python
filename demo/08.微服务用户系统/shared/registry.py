@@ -7,6 +7,7 @@
 
 Demo 用进程内字典实现；生产环境应使用 Consul / etcd / Nacos。
 """
+
 import threading
 import time
 from dataclasses import dataclass, field
@@ -65,7 +66,9 @@ class ServiceRegistry:
     def healthy_instances(self, name: str) -> list[ServiceInstance]:
         with self._lock:
             return [
-                i for i in self._instances.get(name, []) if i.is_healthy(self.heartbeat_ttl)
+                i
+                for i in self._instances.get(name, [])
+                if i.is_healthy(self.heartbeat_ttl)
             ]
 
     def discover(self, name: str) -> ServiceInstance | None:

@@ -5,6 +5,7 @@
 2. 已登录用户即可访问
 3. 需要特定权限才能访问
 """
+
 from fastapi import APIRouter, Depends
 
 from deps import get_current_user, require_permissions

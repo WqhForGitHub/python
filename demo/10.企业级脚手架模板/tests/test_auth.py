@@ -1,4 +1,5 @@
 """认证与 RBAC 集成测试。"""
+
 import pytest
 
 
@@ -19,7 +20,9 @@ async def test_login_and_me(client):
     token = resp.json()["access_token"]
     assert token
 
-    me = await client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+    me = await client.get(
+        "/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"}
+    )
     assert me.status_code == 200
     assert me.json()["username"] == "admin"
     assert me.json()["is_superuser"] is True

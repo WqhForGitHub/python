@@ -2,6 +2,7 @@
 
 支持从环境变量 / .env 文件加载。生产环境通过环境变量注入敏感配置。
 """
+
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict

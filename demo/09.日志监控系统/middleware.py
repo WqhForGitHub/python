@@ -9,6 +9,7 @@
 
 request_id 可用于跨服务链路追踪：下游服务透传同一 X-Request-ID。
 """
+
 import logging
 import time
 import uuid

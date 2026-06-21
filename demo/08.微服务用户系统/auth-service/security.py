@@ -1,4 +1,5 @@
 """JWT 编解码工具。"""
+
 from datetime import datetime, timedelta
 
 from jose import jwt

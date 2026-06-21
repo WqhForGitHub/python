@@ -11,6 +11,7 @@
 
 启动顺序：先启动 gateway，再启动 auth-service / user-service。
 """
+
 import sys
 from pathlib import Path
 
@@ -122,7 +123,9 @@ async def _proxy(service_name: str, request: Request, path_tail: str) -> Respons
             )
 
     excluded = {"content-encoding", "content-length", "transfer-encoding"}
-    response_headers = {k: v for k, v in resp.headers.items() if k.lower() not in excluded}
+    response_headers = {
+        k: v for k, v in resp.headers.items() if k.lower() not in excluded
+    }
     return Response(
         content=resp.content,
         status_code=resp.status_code,
@@ -155,7 +158,9 @@ async def _verify_token(request: Request) -> dict | None:
 
 
 # 通用代理入口：/api/{service-prefix}/...
-@app.api_route("/api/{prefix}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+@app.api_route(
+    "/api/{prefix}/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"]
+)
 async def gateway_proxy(prefix: str, path: str, request: Request):
     route_prefix = f"/api/{prefix}"
     service_name = ROUTE_MAP.get(route_prefix)

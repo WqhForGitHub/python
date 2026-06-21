@@ -2,6 +2,7 @@
 
 通过 header `X-User-Id` 标识用户（Demo 简化，实际应接入鉴权）。
 """
+
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 

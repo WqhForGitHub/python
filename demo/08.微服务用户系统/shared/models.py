@@ -1,4 +1,5 @@
 """微服务间共享的 Pydantic 模型。"""
+
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field

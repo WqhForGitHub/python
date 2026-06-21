@@ -3,6 +3,7 @@
 默认 PostgreSQL（asyncpg）；DATABASE_URL 为 sqlite 时使用 aiosqlite，
 便于本地无 PG 环境快速运行 Demo。
 """
+
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,

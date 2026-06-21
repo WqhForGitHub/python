@@ -1,4 +1,5 @@
 """应用配置。"""
+
 import os
 from pathlib import Path
 
@@ -25,11 +26,11 @@ MOCK_LATENCY = float(os.getenv("MOCK_LATENCY", "1.5"))
 # ============================================================
 # 限流（令牌桶）
 # ============================================================
-RATE_LIMIT_CAPACITY = int(os.getenv("RATE_LIMIT_CAPACITY", "5"))   # 桶容量
-RATE_LIMIT_REFILL = int(os.getenv("RATE_LIMIT_REFILL", "5"))       # 每秒补充令牌数
+RATE_LIMIT_CAPACITY = int(os.getenv("RATE_LIMIT_CAPACITY", "5"))  # 桶容量
+RATE_LIMIT_REFILL = int(os.getenv("RATE_LIMIT_REFILL", "5"))  # 每秒补充令牌数
 
 # ============================================================
 # 任务队列
 # ============================================================
-TASK_QUEUE_WORKERS = int(os.getenv("TASK_QUEUE_WORKERS", "2"))     # 后台 worker 数
+TASK_QUEUE_WORKERS = int(os.getenv("TASK_QUEUE_WORKERS", "2"))  # 后台 worker 数
 TASK_MAX_RETRIES = int(os.getenv("TASK_MAX_RETRIES", "2"))

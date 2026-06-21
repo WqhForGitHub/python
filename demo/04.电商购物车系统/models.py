@@ -6,6 +6,7 @@
 
 购物车不落库，存储在 Redis 中。
 """
+
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String, Text
@@ -46,17 +47,21 @@ class Order(Base):
     address = Column(String(255), default="", nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+    items = relationship(
+        "OrderItem", back_populates="order", cascade="all, delete-orphan"
+    )
 
 
 class OrderItem(Base):
     __tablename__ = "order_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
+    order_id = Column(
+        Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False
+    )
     product_id = Column(Integer, nullable=False)
     product_name = Column(String(100), nullable=False)  # 下单时的快照
-    price = Column(Numeric(10, 2), nullable=False)       # 下单时的快照
+    price = Column(Numeric(10, 2), nullable=False)  # 下单时的快照
     quantity = Column(Integer, nullable=False)
 
     order = relationship("Order", back_populates="items")

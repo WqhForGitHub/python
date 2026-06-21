@@ -3,11 +3,11 @@
 每个 room 维护一个定长队列，仅保留最近 HISTORY_LIMIT 条。
 生产环境应替换为 Redis List / 数据库。
 """
+
 from collections import deque
 
 import config
 import schemas
-
 
 # room -> deque[MessageRecord]
 _history: dict[str, deque] = {}

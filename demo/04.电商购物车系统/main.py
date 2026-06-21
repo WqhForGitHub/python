@@ -8,6 +8,7 @@
 - 购物车（Redis 存储）
 - 下单接口（扣库存 / 生成订单）
 """
+
 from fastapi import FastAPI
 
 import cache
@@ -28,9 +29,27 @@ def _seed() -> None:
     try:
         if db.query(models.Product).count() == 0:
             samples = [
-                models.Product(name="iPhone 15", description="苹果手机", price=6999, stock=50, image_url=""),
-                models.Product(name="MacBook Pro", description="苹果笔记本", price=14999, stock=20, image_url=""),
-                models.Product(name="AirPods Pro", description="苹果耳机", price=1999, stock=100, image_url=""),
+                models.Product(
+                    name="iPhone 15",
+                    description="苹果手机",
+                    price=6999,
+                    stock=50,
+                    image_url="",
+                ),
+                models.Product(
+                    name="MacBook Pro",
+                    description="苹果笔记本",
+                    price=14999,
+                    stock=20,
+                    image_url="",
+                ),
+                models.Product(
+                    name="AirPods Pro",
+                    description="苹果耳机",
+                    price=1999,
+                    stock=100,
+                    image_url="",
+                ),
             ]
             db.add_all(samples)
             db.commit()

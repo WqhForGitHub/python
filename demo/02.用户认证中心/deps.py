@@ -14,6 +14,7 @@
     @router.get("/")
     def admin_only(_: User = Depends(require_roles("admin"))): ...
 """
+
 from typing import Callable
 
 from fastapi import Depends, HTTPException, status

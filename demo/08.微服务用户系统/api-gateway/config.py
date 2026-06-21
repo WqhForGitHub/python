@@ -1,4 +1,5 @@
 """api-gateway 配置。"""
+
 import os
 
 GATEWAY_PORT = int(os.getenv("GATEWAY_PORT", "8000"))

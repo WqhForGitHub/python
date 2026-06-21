@@ -8,6 +8,7 @@
 - 本地存储 / MinIO 对象存储（可切换）
 - 文件权限控制（public / private / shared）
 """
+
 from fastapi import FastAPI
 
 import models

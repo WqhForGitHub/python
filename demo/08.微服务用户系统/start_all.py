@@ -6,6 +6,7 @@
 会以子进程方式拉起 api-gateway / auth-service / user-service，
 Ctrl+C 统一退出。
 """
+
 import os
 import signal
 import subprocess
@@ -31,8 +32,14 @@ def main() -> None:
             procs.append(
                 subprocess.Popen(
                     [
-                        sys.executable, "-m", "uvicorn",
-                        f"main:app", "--port", str(port), "--host", "0.0.0.0",
+                        sys.executable,
+                        "-m",
+                        "uvicorn",
+                        f"main:app",
+                        "--port",
+                        str(port),
+                        "--host",
+                        "0.0.0.0",
                     ],
                     cwd=str(ROOT / Path(rel).parent),
                 )

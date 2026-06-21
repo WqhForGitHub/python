@@ -5,6 +5,7 @@
 - 分页列表（支持按标签 / 作者 / 关键词筛选）
 - 评论创建 / 删除
 """
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -25,7 +26,9 @@ router = APIRouter(prefix="/posts", tags=["文章"])
 )
 async def create_post(post_in: schemas.PostCreate, db: AsyncSession = Depends(get_db)):
     if not await crud.user.get_user(db, post_in.author_id):
-        raise HTTPException(status_code=400, detail=f"作者 ID {post_in.author_id} 不存在")
+        raise HTTPException(
+            status_code=400, detail=f"作者 ID {post_in.author_id} 不存在"
+        )
     return await crud.post.create_post(db, post_in)
 
 
@@ -112,7 +115,9 @@ async def create_comment(
     if not await crud.post.get_post(db, post_id):
         raise HTTPException(status_code=404, detail=f"文章 ID {post_id} 不存在")
     if not await crud.user.get_user(db, comment_in.author_id):
-        raise HTTPException(status_code=400, detail=f"评论者 ID {comment_in.author_id} 不存在")
+        raise HTTPException(
+            status_code=400, detail=f"评论者 ID {comment_in.author_id} 不存在"
+        )
     return await crud.comment.create_comment(db, post_id, comment_in)
 
 

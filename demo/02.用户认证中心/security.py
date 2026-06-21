@@ -5,6 +5,7 @@
 - access_token  短期有效，携带用户角色与权限，用于接口鉴权
 - refresh_token 长期有效，仅携带用户 ID 与 jti，用于换取新的令牌对
 """
+
 import hashlib
 import secrets
 from datetime import datetime, timedelta

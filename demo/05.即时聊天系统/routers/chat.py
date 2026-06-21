@@ -5,6 +5,7 @@
 
 消息格式见 schemas.WSMessage。
 """
+
 import json
 from datetime import datetime
 

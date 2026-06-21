@@ -3,6 +3,7 @@
 登录接口使用 OAuth2PasswordRequestForm（表单），以便 Swagger 文档的
 "Authorize" 按钮可直接调用并保存 access_token。
 """
+
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status

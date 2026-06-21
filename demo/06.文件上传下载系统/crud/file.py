@@ -1,4 +1,5 @@
 """文件元数据 CRUD 操作 + 权限辅助。"""
+
 import hashlib
 from datetime import datetime
 from uuid import uuid4
@@ -44,7 +45,9 @@ def list_files_by_owner(
     )
 
 
-def list_public_files(db: Session, skip: int = 0, limit: int = 50) -> list[models.FileRecord]:
+def list_public_files(
+    db: Session, skip: int = 0, limit: int = 50
+) -> list[models.FileRecord]:
     return (
         db.query(models.FileRecord)
         .filter(models.FileRecord.visibility == "public")

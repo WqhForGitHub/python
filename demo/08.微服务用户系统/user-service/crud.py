@@ -2,6 +2,7 @@
 
 包含 verify_password 接口供 auth-service 远程调用验证凭据。
 """
+
 from sqlalchemy.orm import Session
 
 import models
