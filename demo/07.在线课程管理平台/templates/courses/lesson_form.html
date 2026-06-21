@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}添加课时 - {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-plus-lg"></i> 为「{{ course.title }}」添加课时
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.title.label }}</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                        <div class="text-danger small">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.content.label }}</label>
+                        {{ form.content }}
+                        {% if form.content.errors %}
+                        <div class="text-danger small">{{ form.content.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.video_url.label }}</label>
+                        {{ form.video_url }}
+                        {% if form.video_url.errors %}
+                        <div class="text-danger small">{{ form.video_url.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">可选，填写视频外链地址</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.order.label }}</label>
+                        {{ form.order }}
+                        {% if form.order.errors %}
+                        <div class="text-danger small">{{ form.order.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">数字越小越靠前</div>
+                    </div>
+
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'courses:course_detail' course.pk %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> 返回课程
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> 保存课时
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

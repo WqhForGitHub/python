@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}登录 - 基础CRUD练习系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-3"><i class="bi bi-box-arrow-in-right"></i> 用户登录</h3>
+                <p class="text-center text-muted small">登录后即可进行新建 / 编辑 / 删除操作</p>
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    用户名或密码错误，请重试。
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="id_username">用户名</label>
+                        <input type="text" name="username" id="id_username"
+                               class="form-control" autofocus required
+                               autocomplete="username" placeholder="请输入用户名">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="id_password">密码</label>
+                        <input type="password" name="password" id="id_password"
+                               class="form-control" required
+                               autocomplete="current-password" placeholder="请输入密码">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right"></i> 登录
+                        </button>
+                    </div>
+                </form>
+
+                <hr>
+                <div class="text-center text-muted small">
+                    <p class="mb-1">提示：使用 <code>python manage.py createsuperuser</code> 创建账号</p>
+                    <a href="{% url 'students:student_list' %}" class="text-decoration-none">
+                        <i class="bi bi-arrow-left"></i> 返回学生列表
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

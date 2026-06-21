@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}{{ employee.user.display_name|default:employee.user.username }} - 员工详情{% endblock %}
+{% block page_title %}员工详情{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            {% if employee.user.avatar %}
+            <img src="{{ employee.user.avatar.url }}" alt="头像" class="rounded-circle me-3" width="56" height="56">
+            {% else %}
+            <i class="bi bi-person-circle display-6 me-3 text-secondary"></i>
+            {% endif %}
+            <div>
+                <h4 class="mb-1">{{ employee.user.display_name|default:employee.user.username }}</h4>
+                <small class="text-muted">
+                    {{ employee.position|default:"未设置岗位" }} |
+                    {{ employee.department|default:"未分配部门" }}
+                </small>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'employees:employee_list' %}" class="btn btn-sm btn-outline-secondary">返回列表</a>
+            {% if request.user.is_manager or request.user.is_admin or request.user.is_superuser %}
+            <a href="{% url 'employees:employee_edit' employee.pk %}" class="btn btn-sm btn-warning">编辑</a>
+            <a href="{% url 'employees:employee_delete' employee.pk %}" class="btn btn-sm btn-danger">删除</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">基本信息</div>
+                <div class="card-body">
+                    <table class="table table-borderless mb-0">
+                        <tr><th style="width:120px">用户名</th><td>{{ employee.user.username }}</td></tr>
+                        <tr><th>员工编号</th><td>{{ employee.user.employee_no|default:"-" }}</td></tr>
+                        <tr><th>姓名</th><td>{{ employee.user.get_full_name|default:"-" }}</td></tr>
+                        <tr><th>邮箱</th><td>{{ employee.user.email|default:"-" }}</td></tr>
+                        <tr><th>电话</th><td>{{ employee.user.phone|default:"-" }}</td></tr>
+                        <tr><th>角色</th><td>{{ employee.user.get_role_display|default:employee.user.role }}</td></tr>
+                        <tr><th>入职日期(账户)</th><td>{{ employee.user.hire_date|default:"-" }}</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">工作信息</div>
+                <div class="card-body">
+                    <table class="table table-borderless mb-0">
+                        <tr><th style="width:120px">部门</th><td>{{ employee.department|default:"未分配" }}</td></tr>
+                        <tr><th>岗位</th><td>{{ employee.position|default:"-" }}</td></tr>
+                        <tr><th>状态</th>
+                            <td>
+                                {% if employee.status == 'active' %}<span class="badge bg-success">在职</span>
+                                {% elif employee.status == 'leave' %}<span class="badge bg-warning text-dark">休假</span>
+                                {% else %}<span class="badge bg-danger">离职</span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr><th>薪资</th><td>{% if employee.salary %}¥{{ employee.salary }}{% else %}-{% endif %}</td></tr>
+                        <tr><th>入职日期</th><td>{{ employee.joined_at|default:"-" }}</td></tr>
+                        <tr><th>记录创建</th><td>{{ employee.created_at|date:"Y-m-d H:i" }}</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关联项目 -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">参与的项目</div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for project in employee.user.projects.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{% url 'projects:project_detail' project.pk %}">{{ project.name }}</a>
+                            <small class="text-muted">{{ project.code }}</small>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center text-muted">未参与任何项目</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关联任务 -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">负责的任务</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0">
+                        <thead><tr><th>任务</th><th>项目</th><th>状态</th><th>优先级</th></tr></thead>
+                        <tbody>
+                        {% for task in employee.user.tasks.all %}
+                            <tr>
+                                <td><a href="{% url 'projects:task_edit' task.pk %}">{{ task.title }}</a></td>
+                                <td>{{ task.project.name }}</td>
+                                <td>{{ task.get_status_display }}</td>
+                                <td>{{ task.get_priority_display }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="4" class="text-center text-muted">暂无负责的任务</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+[project]
+name = "course-platform"
+description = "在线课程管理平台 - Django Demo"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "Django>=5.0",
+    "Pillow>=10.0.0",
+]

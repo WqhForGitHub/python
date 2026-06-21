@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}任务编辑 - 企业后台管理系统{% endblock %}
+{% block page_title %}{% if form.instance.pk %}编辑任务{% else %}新增任务{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-list-task"></i>
+                    {% if form.instance.pk %}编辑任务：{{ form.instance.title }}{% else %}新增任务{% endif %}
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                            {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+                        {% endfor %}
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'projects:task_list' %}" class="btn btn-outline-secondary">取消</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> 保存
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

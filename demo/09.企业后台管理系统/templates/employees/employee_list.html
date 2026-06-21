@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}员工管理 - 企业后台管理系统{% endblock %}
+{% block page_title %}员工管理{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">员工列表</h4>
+        {% if request.user.is_manager or request.user.is_admin or request.user.is_superuser %}
+        <a href="{% url 'employees:employee_create' %}" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-lg"></i> 新增员工
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- 搜索/过滤表单 -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="get" class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label small">{{ search_form.q.label }}</label>
+                    {{ search_form.q }}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small">{{ search_form.department.label }}</label>
+                    {{ search_form.department }}
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small">{{ search_form.status.label }}</label>
+                    {{ search_form.status }}
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-search"></i> 查询
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>员工</th>
+                        <th>员工编号</th>
+                        <th>部门</th>
+                        <th>岗位</th>
+                        <th>状态</th>
+                        <th>入职日期</th>
+                        <th class="text-end">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for emp in employees %}
+                    <tr>
+                        <td>{{ emp.user.display_name|default:emp.user.username }}</td>
+                        <td>{{ emp.user.employee_no|default:"-" }}</td>
+                        <td>{{ emp.department|default:"-" }}</td>
+                        <td>{{ emp.position|default:"-" }}</td>
+                        <td>
+                            {% if emp.status == 'active' %}<span class="badge bg-success">在职</span>
+                            {% elif emp.status == 'leave' %}<span class="badge bg-warning text-dark">休假</span>
+                            {% else %}<span class="badge bg-danger">离职</span>{% endif %}
+                        </td>
+                        <td>{{ emp.joined_at|default:"-" }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'employees:employee_detail' emp.pk %}" class="btn btn-sm btn-outline-info">详情</a>
+                            {% if request.user.is_manager or request.user.is_admin or request.user.is_superuser %}
+                            <a href="{% url 'employees:employee_edit' emp.pk %}" class="btn btn-sm btn-outline-warning">编辑</a>
+                            <a href="{% url 'employees:employee_delete' emp.pk %}" class="btn btn-sm btn-outline-danger">删除</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="7" class="text-center text-muted py-4">暂无员工数据</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if is_paginated %}
+    <nav class="mt-3">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.department %}&department={{ request.GET.department }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">上一页</a></li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">第 {{ page_obj.number }} / {{ paginator.num_pages }} 页</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.department %}&department={{ request.GET.department }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">下一页</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

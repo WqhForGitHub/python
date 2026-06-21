@@ -1,0 +1,92 @@
+/* 博客评论互动系统 - 基础样式 */
+
+:root {
+    --blog-accent: #0d6efd;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 文章卡片 */
+.post-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12) !important;
+}
+.post-card .card-title a:hover {
+    color: var(--blog-accent);
+}
+
+/* 封面图适配 */
+.object-fit-cover {
+    object-fit: cover;
+    min-height: 140px;
+}
+
+/* 文章正文排版 */
+.post-content {
+    line-height: 1.85;
+    font-size: 1.05rem;
+}
+.post-content p {
+    margin-bottom: 1rem;
+}
+.post-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 评论区 */
+.comments-section {
+    padding: 1rem 0;
+}
+.comments-list {
+    margin-top: 1rem;
+}
+
+/* 评论项与缩进 */
+.comment-item {
+    padding: 0.5rem 0 0.5rem 0.75rem;
+    border-left: 3px solid #e9ecef;
+    margin-bottom: 0.75rem;
+}
+.comment-item:hover {
+    border-left-color: var(--blog-accent);
+}
+.comment-body p {
+    margin-bottom: 0.25rem;
+}
+.comment-replies {
+    margin-left: 0.5rem;
+}
+.btn-reply {
+    color: var(--blog-accent);
+    font-size: 0.85rem;
+}
+.btn-reply:hover {
+    text-decoration: underline !important;
+}
+
+/* 多级回复缩进控制（避免过深） */
+.comment-item .comment-item .comment-item {
+    margin-left: 1rem;
+}
+
+/* 标签云 */
+.badge.text-bg-light:hover {
+    background-color: #e2e6ea !important;
+}
+
+/* 表单控件 */
+textarea.form-control {
+    resize: vertical;
+}
+
+/* 页脚固定感 */
+footer {
+    margin-top: 3rem;
+}

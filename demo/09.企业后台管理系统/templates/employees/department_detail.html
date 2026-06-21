@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ department.name }} - 部门详情{% endblock %}
+{% block page_title %}部门详情{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="mb-1">{{ department.name }}</h4>
+            <small class="text-muted">
+                负责人：{{ department.manager|default:"未指定" }} |
+                上级部门：{{ department.parent|default:"无" }} |
+                创建于 {{ department.created_at|date:"Y-m-d" }}
+            </small>
+        </div>
+        <div>
+            <a href="{% url 'employees:department_list' %}" class="btn btn-sm btn-outline-secondary">返回列表</a>
+            {% if request.user.is_manager or request.user.is_admin or request.user.is_superuser %}
+            <a href="{% url 'employees:department_edit' department.pk %}" class="btn btn-sm btn-warning">编辑</a>
+            <a href="{% url 'employees:department_delete' department.pk %}" class="btn btn-sm btn-danger">删除</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if department.description %}
+    <div class="card mb-3">
+        <div class="card-header">部门描述</div>
+        <div class="card-body">{{ department.description|linebreaksbr }}</div>
+    </div>
+    {% endif %}
+
+    <div class="row g-3">
+        <!-- 部门成员（用户） -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">部门成员 ({{ members.count }})</div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for member in members %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-person"></i> {{ member.display_name|default:member.username }}</span>
+                            <small class="text-muted">{{ member.role }} / {{ member.employee_no|default:"" }}</small>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center text-muted">暂无成员</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 部门员工记录 -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">员工记录 ({{ employees.count }})</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0">
+                        <thead>
+                            <tr><th>员工</th><th>岗位</th><th>状态</th><th>入职日期</th></tr>
+                        </thead>
+                        <tbody>
+                        {% for emp in employees %}
+                            <tr>
+                                <td><a href="{% url 'employees:employee_detail' emp.pk %}">{{ emp.user.display_name|default:emp.user.username }}</a></td>
+                                <td>{{ emp.position|default:"-" }}</td>
+                                <td>
+                                    {% if emp.status == 'active' %}<span class="badge bg-success">在职</span>
+                                    {% elif emp.status == 'leave' %}<span class="badge bg-warning text-dark">休假</span>
+                                    {% else %}<span class="badge bg-danger">离职</span>{% endif %}
+                                </td>
+                                <td>{{ emp.joined_at|default:"-" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="4" class="text-center text-muted">暂无员工记录</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 子部门 -->
+        {% if children %}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">子部门</div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for child in children %}
+                        <li class="list-group-item">
+                            <a href="{% url 'employees:department_detail' child.pk %}">{{ child.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

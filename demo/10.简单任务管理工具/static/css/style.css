@@ -1,0 +1,189 @@
+/* 简单任务管理工具 - 看板样式 */
+
+body {
+    background-color: #f5f6fa;
+    min-height: 100vh;
+}
+
+main {
+    min-height: calc(100vh - 180px);
+}
+
+/* 看板卡片（列表页） */
+.board-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.board-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.12) !important;
+}
+
+/* ============ 看板（Kanban）布局 ============ */
+
+.kanban-board {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.kanban-column {
+    flex: 0 0 300px;
+    background-color: #ebecf0;
+    border-radius: 8px;
+    padding: 0.5rem;
+    max-height: calc(100vh - 220px);
+    display: flex;
+    flex-direction: column;
+}
+
+.kanban-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.5rem 0.75rem;
+    font-weight: 600;
+    color: #172b4d;
+}
+
+.kanban-cards {
+    overflow-y: auto;
+    flex: 1;
+    padding: 0 0.25rem;
+}
+
+/* 卡片 */
+.kanban-card {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 0.6rem 0.7rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    border-left: 3px solid transparent;
+    transition: box-shadow 0.15s ease;
+}
+
+.kanban-card:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+
+.kanban-card .card-title-text {
+    font-size: 0.92rem;
+    color: #172b4d;
+    word-break: break-word;
+}
+
+.kanban-card .card-desc {
+    color: #5e6c84;
+}
+
+.kanban-card .card-meta {
+    margin-top: 0.25rem;
+    color: #5e6c84;
+}
+
+.kanban-card .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 0.4rem;
+}
+
+.kanban-card .card-move-form {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-edit-form {
+    border-top: 1px dashed #d0d4e0;
+    padding-top: 0.5rem;
+}
+
+/* 卡片添加区域 */
+.kanban-add-card {
+    padding: 0.25rem 0.5rem 0.5rem;
+}
+
+/* ============ 优先级徽章 ============ */
+
+.priority-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.priority-urgent {
+    background-color: #dc3545; /* 红色 */
+}
+
+.priority-high {
+    background-color: #fd7e14; /* 橙色 */
+}
+
+.priority-medium {
+    background-color: #0d6efd; /* 蓝色 */
+}
+
+.priority-low {
+    background-color: #6c757d; /* 灰色 */
+}
+
+/* ============ 标签 chips ============ */
+
+.label-chip {
+    display: inline-block;
+    background-color: #e6f0ff;
+    color: #0747a6;
+    border-radius: 4px;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.72rem;
+    margin-right: 0.25rem;
+    margin-bottom: 0.15rem;
+    font-weight: 500;
+}
+
+/* ============ 截止日期 ============ */
+
+.due-date {
+    color: #de350b !important;
+    font-weight: 500;
+}
+
+/* ============ 滚动条美化 ============ */
+
+.kanban-board::-webkit-scrollbar,
+.kanban-cards::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.kanban-board::-webkit-scrollbar-thumb,
+.kanban-cards::-webkit-scrollbar-thumb {
+    background-color: #c1c7d0;
+    border-radius: 4px;
+}
+
+.kanban-board::-webkit-scrollbar-track,
+.kanban-cards::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* ============ 响应式 ============ */
+
+@media (max-width: 768px) {
+    .kanban-column {
+        flex: 0 0 260px;
+    }
+}
+
+/* ============ 页脚 ============ */
+
+.footer {
+    margin-top: 2rem;
+}

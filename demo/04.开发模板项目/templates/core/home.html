@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}首页 - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">欢迎使用 {{ site_name }}</h1>
+    <p class="lead text-muted">基于 Django 5.x 的项目开发模板脚手架</p>
+    <div class="mt-4">
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg me-2">立即注册</a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary btn-lg">登录</a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-person-badge"></i> 自定义用户模型</h5>
+                <p class="card-text">使用 AbstractUser 扩展用户字段，包含手机号与头像。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-lightning"></i> 中间件示例</h5>
+                <p class="card-text">RequestTimingMiddleware 在响应头中输出请求耗时。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-tools"></i> 自定义管理命令</h5>
+                <p class="card-text">wait_for_db 命令演示如何等待数据库就绪。</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

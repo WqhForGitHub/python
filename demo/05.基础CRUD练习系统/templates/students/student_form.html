@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title|default:'表单' }} - 基础CRUD练习系统{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+    <h2><i class="bi bi-pencil-square"></i> {{ title|default:'表单' }}</h2>
+    {% if student_obj %}
+    <a href="{% url 'students:student_detail' student_obj.pk %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> 返回详情
+    </a>
+    {% else %}
+    <a href="{% url 'students:student_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> 返回列表
+    </a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            {# 通用错误提示 #}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <div class="row g-3">
+                {% for field in form %}
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                        {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors }}</div>
+                    {% elif field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <hr>
+            <div class="d-flex justify-content-end gap-2">
+                {% if student_obj %}
+                <a href="{% url 'students:student_detail' student_obj.pk %}" class="btn btn-outline-secondary">取消</a>
+                {% else %}
+                <a href="{% url 'students:student_list' %}" class="btn btn-outline-secondary">取消</a>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> {{ submit_text|default:'提交' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

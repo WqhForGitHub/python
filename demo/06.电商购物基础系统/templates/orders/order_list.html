@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}我的订单 - 电商购物基础系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <h2 class="mb-4"><i class="bi bi-receipt"></i> 我的订单</h2>
+
+        {% if orders %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">订单号</th>
+                        <th scope="col">下单时间</th>
+                        <th scope="col">收货人</th>
+                        <th scope="col">城市</th>
+                        <th scope="col" class="text-center">商品数</th>
+                        <th scope="col" class="text-center">总价</th>
+                        <th scope="col" class="text-center">状态</th>
+                        <th scope="col" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.created_at|date:'Y-m-d H:i' }}</td>
+                        <td>{{ order.last_name }}{{ order.first_name }}</td>
+                        <td>{{ order.city }}</td>
+                        <td class="text-center">{{ order.items.count }}</td>
+                        <td class="text-center text-danger">&yen;{{ order.total_price }}</td>
+                        <td class="text-center">
+                            {% if order.paid %}
+                            <span class="badge bg-success">已支付</span>
+                            {% else %}
+                            <span class="badge bg-warning text-dark">待支付</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'orders:order_detail' order.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i> 详情
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+            <h4 class="mt-3 text-muted">您还没有任何订单</h4>
+            <a href="{% url 'products:product_list' %}" class="btn btn-primary mt-2">
+                <i class="bi bi-bag"></i> 去购物
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

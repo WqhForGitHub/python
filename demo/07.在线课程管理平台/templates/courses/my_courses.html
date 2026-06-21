@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}我的课程 - 在线课程平台{% endblock %}
+
+{% block content %}
+<ul class="nav nav-tabs" id="myCoursesTabs">
+    <li class="nav-item">
+        <a class="nav-link {% if user.is_student %}active{% endif %}" href="#enrolled" data-bs-toggle="tab">
+            <i class="bi bi-bookmark-check"></i> 已选课程
+        </a>
+    </li>
+    {% if user.is_teacher or user.is_staff %}
+    <li class="nav-item">
+        <a class="nav-link {% if not user.is_student %}active{% endif %}" href="#taught" data-bs-toggle="tab">
+            <i class="bi bi-chalkboard"></i> 所授课程
+        </a>
+    </li>
+    {% endif %}
+</ul>
+
+<div class="tab-content mt-3">
+    <!-- 已选课程 -->
+    <div class="tab-pane fade {% if user.is_student %}show active{% endif %}" id="enrolled">
+        <h4>我已选的课程</h4>
+        {% if enrolled_courses %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-1">
+            {% for course in enrolled_courses %}
+            <div class="col">
+                <div class="card h-100 shadow-sm course-card">
+                    {% if course.cover %}
+                    <img src="{{ course.cover.url }}" class="card-img-top course-cover" alt="{{ course.title }}">
+                    {% else %}
+                    <div class="card-img-top course-cover-placeholder d-flex align-items-center justify-content-center bg-light">
+                        <i class="bi bi-image" style="font-size: 3rem; color: #ccc;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'courses:course_detail' course.pk %}" class="text-decoration-none">
+                                {{ course.title }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted small">
+                            {{ course.description|truncatechars:60 }}
+                        </p>
+                        <p class="small text-muted">
+                            <i class="bi bi-person"></i> {{ course.teacher|default:'未知' }}
+                            &middot; {{ course.lessons.count }} 课时
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-inbox" style="font-size: 4rem; color: #ddd;"></i>
+            <p class="text-muted mt-3">您还没有选课</p>
+            <a href="{% url 'courses:course_list' %}" class="btn btn-primary">去选课</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 所授课程 -->
+    {% if user.is_teacher or user.is_staff %}
+    <div class="tab-pane fade {% if not user.is_student %}show active{% endif %}" id="taught">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>我教授的课程</h4>
+            <a href="{% url 'courses:course_create' %}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> 创建课程
+            </a>
+        </div>
+        {% if taught_courses %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-1">
+            {% for course in taught_courses %}
+            <div class="col">
+                <div class="card h-100 shadow-sm course-card">
+                    {% if course.cover %}
+                    <img src="{{ course.cover.url }}" class="card-img-top course-cover" alt="{{ course.title }}">
+                    {% else %}
+                    <div class="card-img-top course-cover-placeholder d-flex align-items-center justify-content-center bg-light">
+                        <i class="bi bi-image" style="font-size: 3rem; color: #ccc;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'courses:course_detail' course.pk %}" class="text-decoration-none">
+                                {{ course.title }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted small">
+                            {{ course.description|truncatechars:60 }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if course.is_published %}
+                            <span class="badge bg-primary">已发布</span>
+                            {% else %}
+                            <span class="badge bg-warning text-dark">未发布</span>
+                            {% endif %}
+                            <span class="small text-muted">{{ course.lessons.count }} 课时</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{% url 'courses:course_edit' course.pk %}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i> 编辑
+                        </a>
+                        <a href="{% url 'courses:course_detail' course.pk %}" class="btn btn-sm btn-outline-secondary">
+                            查看
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-inbox" style="font-size: 4rem; color: #ddd;"></i>
+            <p class="text-muted mt-3">您还没有创建课程</p>
+            <a href="{% url 'courses:course_create' %}" class="btn btn-primary">创建课程</a>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

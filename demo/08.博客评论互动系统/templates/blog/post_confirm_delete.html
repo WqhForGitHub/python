@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}删除文章 - 博客互动{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <i class="bi bi-exclamation-triangle"></i> 确认删除
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">确定要删除文章「{{ post.title }}」吗？</h5>
+                <p class="text-muted">此操作不可撤销，文章及其所有评论、点赞记录将被一并删除。</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> 确认删除
+                    </button>
+                    <a href="{% url 'blog:post_detail' slug=post.slug %}" class="btn btn-outline-secondary">
+                        取消
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

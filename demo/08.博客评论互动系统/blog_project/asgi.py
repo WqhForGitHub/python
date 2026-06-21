@@ -1,0 +1,10 @@
+"""
+ASGI 配置，用于异步 ASGI 部署。
+"""
+import os
+
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog_project.settings')
+
+application = get_asgi_application()

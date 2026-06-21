@@ -1,0 +1,59 @@
+/* 基础CRUD练习系统 - 学生成绩管理 - 自定义样式 */
+
+body {
+    padding-top: 70px;
+    background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* 主内容容器，确保有合理边距 */
+.main-content {
+    min-height: calc(100vh - 200px);
+    padding-bottom: 20px;
+}
+
+/* 标题图标与文字间距 */
+h2 i.bi,
+.card-header i.bi {
+    margin-right: 0.25rem;
+}
+
+/* 表格行 hover 增强 */
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* 卡片阴影柔和化 */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+}
+
+/* 分页居中并增加上下间距 */
+.pagination {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 表单 label 加粗 */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+/* 页脚置底 */
+footer {
+    background-color: #f1f3f5;
+}
+
+/* 统计卡片内字号 */
+.display-6 {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+/* 按钮组在小屏幕下换行 */
+.btn-group-sm .btn {
+    margin-bottom: 2px;
+}

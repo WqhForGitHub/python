@@ -1,0 +1,80 @@
+/* 在线课程管理平台 - 自定义样式 */
+
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* 导航栏徽章文字大小 */
+.navbar .badge {
+    font-size: 0.75rem;
+}
+
+/* 课程卡片样式 */
+.course-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+/* 课程封面 */
+.course-cover {
+    height: 160px;
+    object-fit: cover;
+}
+
+.course-cover-placeholder {
+    height: 160px;
+}
+
+/* 课时内容 */
+.lesson-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+/* 面包屑导航 */
+.breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+/* 卡片标题链接颜色 */
+.course-card .card-title a {
+    color: #212529;
+}
+
+.course-card .card-title a:hover {
+    color: #0d6efd;
+}
+
+/* 页脚 */
+footer {
+    margin-top: auto;
+}
+
+/* 表单输入框聚焦样式 */
+.form-control:focus,
+.form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+/* 列表组项激活样式微调 */
+.list-group-item.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* 粘性侧边栏 */
+.sticky-top {
+    z-index: 1000;
+}

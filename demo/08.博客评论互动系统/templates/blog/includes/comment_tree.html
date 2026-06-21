@@ -1,0 +1,27 @@
+{# 递归渲染评论及其回复 #}
+<div class="comment-item border-start ps-3 mb-2">
+    <div class="comment-body">
+        <div class="d-flex align-items-center mb-1">
+            <strong class="me-2">
+                <i class="bi bi-person-circle"></i>
+                {{ comment.author.nickname|default:comment.author.username }}
+            </strong>
+            <small class="text-muted">{{ comment.created_at|date:"Y-m-d H:i" }}</small>
+        </div>
+        <p class="mb-1">{{ comment.content|linebreaksbr }}</p>
+        {% if user.is_authenticated %}
+        <a href="#" class="btn-reply text-decoration-none small" data-parent-id="{{ comment.id }}">
+            <i class="bi bi-reply"></i> 回复
+        </a>
+        {% endif %}
+    </div>
+
+    {# 递归渲染回复 #}
+    {% if comment.replies.all %}
+    <div class="ms-2 mt-2">
+        {% for reply in comment.replies.all %}
+            {% include 'blog/includes/comment_tree.html' with comment=reply %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

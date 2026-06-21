@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}注册 - 博客互动{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="bi bi-person-plus"></i> 用户注册</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger py-2">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <label class="form-label">用户名</label>
+                        <input type="text" name="username" class="form-control"
+                               value="{{ form.username.value|default:'' }}" autofocus>
+                        {% if form.username.errors %}
+                        <div class="text-danger small">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">昵称</label>
+                        <input type="text" name="nickname" class="form-control"
+                               value="{{ form.nickname.value|default:'' }}">
+                        <div class="form-text">可选，显示在文章和评论中。</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">邮箱</label>
+                        <input type="email" name="email" class="form-control"
+                               value="{{ form.email.value|default:'' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">密码</label>
+                        <input type="password" name="password1" class="form-control">
+                        {% if form.password1.errors %}
+                        <div class="text-danger small">{{ form.password1.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">确认密码</label>
+                        <input type="password" name="password2" class="form-control">
+                        {% if form.password2.errors %}
+                        <div class="text-danger small">{{ form.password2.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-person-plus"></i> 注册
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <span class="text-muted">已有账号？</span>
+                <a href="{% url 'accounts:login' %}">去登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

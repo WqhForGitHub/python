@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}文章列表 - 博客互动{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- 主内容区 -->
+    <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">
+                {% if current_tag %}
+                    标签：{{ current_tag.name }}
+                {% elif query %}
+                    搜索：{{ query }}
+                {% else %}
+                    最新文章
+                {% endif %}
+            </h2>
+            {% if user.is_authenticated %}
+            <a href="{% url 'blog:post_create' %}" class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil-square"></i> 发表文章
+            </a>
+            {% endif %}
+        </div>
+
+        {% if page_obj.object_list %}
+            {% for post in page_obj %}
+            <div class="card mb-3 shadow-sm post-card">
+                <div class="row g-0">
+                    {% if post.cover %}
+                    <div class="col-md-3">
+                        <img src="{{ post.cover.url }}" class="img-fluid rounded-start h-100 w-100 object-fit-cover" alt="封面">
+                    </div>
+                    <div class="col-md-9">
+                    {% else %}
+                    <div class="col-md-12">
+                    {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'blog:post_detail' slug=post.slug %}" class="text-decoration-none">
+                                    {{ post.title }}
+                                </a>
+                            </h5>
+                            {% if post.excerpt %}
+                            <p class="card-text text-muted">{{ post.excerpt|truncatechars:80 }}</p>
+                            {% else %}
+                            <p class="card-text text-muted">{{ post.content|truncatechars:80 }}</p>
+                            {% endif %}
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                {% for tag in post.tags.all %}
+                                <a href="{% url 'blog:posts_by_tag' slug=tag.name %}"
+                                   class="badge text-bg-secondary text-decoration-none">
+                                    #{{ tag.name }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="bi bi-person"></i>
+                                    {{ post.author.nickname|default:post.author.username }}
+                                    <span class="mx-1">|</span>
+                                    <i class="bi bi-clock"></i>
+                                    {{ post.created_at|date:"Y-m-d" }}
+                                </small>
+                                <small class="text-muted">
+                                    <span class="me-2"><i class="bi bi-eye"></i> {{ post.views }}</span>
+                                    <span class="me-2"><i class="bi bi-chat"></i> {{ post.comments.count }}</span>
+                                    <span><i class="bi bi-heart"></i> {{ post.likes.count }}</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% include 'blog/includes/pagination.html' %}
+        {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> 暂无文章。
+            {% if user.is_authenticated %}
+                <a href="{% url 'blog:post_create' %}">来发表第一篇吧！</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 侧边栏：标签云 -->
+    <div class="col-lg-3">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <strong><i class="bi bi-tags"></i> 标签云</strong>
+            </div>
+            <div class="card-body">
+                {% if all_tags %}
+                <div class="d-flex flex-wrap gap-2">
+                    {% for tag in all_tags %}
+                    <a href="{% url 'blog:posts_by_tag' slug=tag.name %}"
+                       class="badge {% if current_tag and current_tag.name == tag.name %}text-bg-primary{% else %}text-bg-light text-dark border{% endif %} text-decoration-none">
+                        #{{ tag.name }}
+                        <span class="text-muted small">({{ tag.posts.count }})</span>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted small mb-0">暂无标签。</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

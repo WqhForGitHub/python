@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}个人资料 - 简单任务管理工具{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <h2 class="mb-4"><i class="bi bi-person-circle"></i> 个人资料</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label">用户名</label>
+                        <input type="text" class="form-control" value="{{ user.username }}" disabled>
+                        <div class="form-text">用户名不可修改。</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.email.label }}</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.avatar.label }}</label>
+                        {{ form.avatar }}
+                        {% if form.avatar.errors %}<div class="text-danger small">{{ form.avatar.errors }}</div>{% endif %}
+                        {% if user.avatar %}
+                            <div class="mt-2">
+                                <img src="{{ user.avatar.url }}" alt="头像" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.bio.label }}</label>
+                        {{ form.bio }}
+                        {% if form.bio.errors %}<div class="text-danger small">{{ form.bio.errors }}</div>{% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> 保存
+                    </button>
+                    <a href="{% url 'boards:board_list' %}" class="btn btn-outline-secondary">返回</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

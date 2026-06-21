@@ -1,0 +1,8 @@
+[project]
+name = "template-project"
+version = "0.1.0"
+description = "开发模板项目 - Django Demo"
+requires-python = ">=3.10"
+dependencies = [
+    "Django>=5.0",
+]

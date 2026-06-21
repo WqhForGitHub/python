@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}个人资料 - 博客互动{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4"><i class="bi bi-person-gear"></i> 个人资料</h2>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" class="rounded-circle me-3"
+                         width="64" height="64" alt="头像">
+                    {% else %}
+                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3"
+                         style="width:64px;height:64px;">
+                        <i class="bi bi-person-fill fs-3"></i>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h5 class="mb-0">{{ user.nickname|default:user.username }}</h5>
+                        <small class="text-muted">@{{ user.username }}</small>
+                    </div>
+                </div>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.nickname.label }}</label>
+                        {{ form.nickname }}
+                        {% if form.nickname.errors %}
+                        <div class="text-danger small">{{ form.nickname.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.email.label }}</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="text-danger small">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.avatar.label }}</label>
+                        {{ form.avatar }}
+                        {% if form.avatar.errors %}
+                        <div class="text-danger small">{{ form.avatar.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.bio.label }}</label>
+                        {{ form.bio }}
+                        {% if form.bio.errors %}
+                        <div class="text-danger small">{{ form.bio.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> 保存修改
+                    </button>
+                    <a href="{% url 'blog:post_list' %}" class="btn btn-outline-secondary">返回</a>
+                </form>
+            </div>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="row text-center">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>{{ user.posts.count }}</h5>
+                        <small class="text-muted">文章</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>{{ user.comments.count }}</h5>
+                        <small class="text-muted">评论</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>{{ user.likes.count }}</h5>
+                        <small class="text-muted">点赞</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

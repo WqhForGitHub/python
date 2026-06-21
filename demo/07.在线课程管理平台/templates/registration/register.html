@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}注册 - 在线课程平台{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white text-center">
+                <h4 class="mb-0"><i class="bi bi-person-plus"></i> 用户注册</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.username.label }}</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                        <div class="text-danger small">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.email.label }}</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="text-danger small">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.role.label }}</label>
+                        {{ form.role }}
+                        {% if form.role.errors %}
+                        <div class="text-danger small">{{ form.role.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">学员可浏览选课；教师可创建课程</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.password1.label }}</label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                        <div class="text-danger small">{{ form.password1.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.password2.label }}</label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                        <div class="text-danger small">{{ form.password2.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> 注册
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-white text-center">
+                <small class="text-muted">
+                    已有账号？<a href="{% url 'accounts:login' %}">去登录</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

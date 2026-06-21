@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}项目编辑 - 企业后台管理系统{% endblock %}
+{% block page_title %}{% if form.instance.pk %}编辑项目{% else %}新增项目{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-kanban"></i>
+                    {% if form.instance.pk %}编辑项目：{{ form.instance.name }}{% else %}新增项目{% endif %}
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {{ form.name.errors }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ form.code.label }}</label>
+                                {{ form.code }}
+                                {{ form.code.errors }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.description.label }}</label>
+                            {{ form.description }}
+                            {{ form.description.errors }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">{{ form.manager.label }}</label>
+                                {{ form.manager }}
+                                {{ form.manager.errors }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">{{ form.department.label }}</label>
+                                {{ form.department }}
+                                {{ form.department.errors }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">{{ form.status.label }}</label>
+                                {{ form.status }}
+                                {{ form.status.errors }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">{{ form.start_date.label }}</label>
+                                {{ form.start_date }}
+                                {{ form.start_date.errors }}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">{{ form.end_date.label }}</label>
+                                {{ form.end_date }}
+                                {{ form.end_date.errors }}
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">{{ form.budget.label }}</label>
+                                {{ form.budget }}
+                                {{ form.budget.errors }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.members.label }}</label>
+                            {{ form.members }}
+                            <small class="form-text text-muted">按住 Ctrl（Mac 为 Cmd）可多选</small>
+                            {{ form.members.errors }}
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'projects:project_list' %}" class="btn btn-outline-secondary">取消</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> 保存
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

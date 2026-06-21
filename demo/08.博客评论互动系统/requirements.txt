@@ -1,0 +1,10 @@
+# PEP 621 项目元数据格式
+[project]
+name = "blog-interactive"
+version = "0.1.0"
+description = "博客评论互动系统 - Django Demo"
+requires-python = ">=3.10"
+dependencies = [
+    "Django>=5.0",
+    "Pillow>=10.0",
+]

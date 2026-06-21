@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board.title }} - 看板{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <div>
+        <h2 class="mb-1">{{ board.title }}</h2>
+        <p class="text-muted mb-0">
+            {{ board.description|default:'暂无描述' }}
+            &middot; 所有者：{{ board.owner.username }}
+            {% if board.members.all %}&middot; 成员：{% for m in board.members.all %}{{ m.username }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}
+        </p>
+    </div>
+    <div class="btn-group">
+        <a href="{% url 'boards:board_edit' pk=board.pk %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-pencil"></i> 编辑
+        </a>
+        {% if board.owner == user %}
+            <a href="{% url 'boards:board_delete' pk=board.pk %}" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-trash"></i> 删除
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 添加列表 -->
+<div class="mb-3">
+    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+            data-bs-target="#addColumnForm" aria-expanded="false">
+        <i class="bi bi-plus-lg"></i> 添加列表
+    </button>
+    <div class="collapse mt-2" id="addColumnForm" style="max-width: 280px;">
+        <form method="post" action="{% url 'boards:column_create' pk=board.pk %}">
+            {% csrf_token %}
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" name="title" placeholder="列表标题，如：待办" required>
+                <button type="submit" class="btn btn-primary">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 看板：横向滚动 -->
+<div class="kanban-board">
+    {% if columns_with_cards %}
+        {% for item in columns_with_cards %}
+            <div class="kanban-column">
+                <div class="kanban-column-header">
+                    <h6 class="mb-0">{{ item.column.title }}</h6>
+                    <span class="badge bg-secondary">{{ item.cards|length }}</span>
+                </div>
+
+                <div class="kanban-cards">
+                    {% for card in item.cards %}
+                        <div class="kanban-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <strong class="card-title-text">{{ card.title }}</strong>
+                                <span class="priority-badge priority-{{ card.priority }}">{{ card.get_priority_display }}</span>
+                            </div>
+
+                            {% if card.description %}
+                                <p class="card-desc small text-muted mb-1">{{ card.description|truncatechars:80 }}</p>
+                            {% endif %}
+
+                            {% if card.label_list %}
+                                <div class="mb-1">
+                                    {% for label in card.label_list %}
+                                        <span class="label-chip">{{ label }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="d-flex justify-content-between align-items-center card-meta">
+                                <span class="small">
+                                    {% if card.assignee %}
+                                        <i class="bi bi-person"></i> {{ card.assignee.username }}
+                                    {% else %}
+                                        <span class="text-muted">未指派</span>
+                                    {% endif %}
+                                </span>
+                                {% if card.due_date %}
+                                    <span class="small due-date">
+                                        <i class="bi bi-calendar"></i> {{ card.due_date|date:"m/d" }}
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <!-- 卡片操作：移动 / 编辑 / 删除 -->
+                            <div class="card-actions mt-2">
+                                {% include 'boards/includes/card_move_form.html' with card=card board=board move_form=item.move_form %}
+                                <a href="#" class="btn btn-sm btn-outline-secondary"
+                                   onclick="toggleCardEdit({{ card.pk }}); return false;">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="post" action="{% url 'boards:card_delete' pk=card.pk %}" class="d-inline"
+                                      onsubmit="return confirm('确定删除卡片「{{ card.title }}」？');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- 内联编辑表单（默认隐藏） -->
+                            <div id="edit-card-{{ card.pk }}" class="card-edit-form mt-2" style="display:none;">
+                                <form method="post" action="{% url 'boards:card_edit' pk=card.pk %}">
+                                    {% csrf_token %}
+                                    <div class="mb-1">
+                                        <input type="text" class="form-control form-control-sm" name="title" value="{{ card.title }}" required>
+                                    </div>
+                                    <div class="mb-1">
+                                        <textarea class="form-control form-control-sm" name="description" rows="2">{{ card.description }}</textarea>
+                                    </div>
+                                    <div class="mb-1">
+                                        <select class="form-select form-select-sm" name="assignee">
+                                            <option value="">未指派</option>
+                                            <option value="{{ board.owner.pk }}" {% if card.assignee == board.owner %}selected{% endif %}>{{ board.owner.username }}</option>
+                                            {% for m in board.members.all %}
+                                                <option value="{{ m.pk }}" {% if card.assignee == m %}selected{% endif %}>{{ m.username }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-1">
+                                        <select class="form-select form-select-sm" name="priority">
+                                            {% for value, label in card.PRIORITY_CHOICES %}
+                                                <option value="{{ value }}" {% if card.priority == value %}selected{% endif %}>{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input type="date" class="form-control form-control-sm" name="due_date" value="{{ card.due_date|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="mb-1">
+                                        <input type="text" class="form-control form-control-sm" name="labels" value="{{ card.labels }}" placeholder="标签，逗号分隔">
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-primary">保存</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted small text-center py-2">暂无卡片</p>
+                    {% endfor %}
+                </div>
+
+                <!-- 添加卡片 -->
+                {% include 'boards/includes/card_form.html' with column=item.column card_form=item.card_form %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center text-muted py-5">
+            <i class="bi bi-inbox display-4"></i>
+            <p class="mt-2">还没有列表，点击上方「添加列表」开始吧！</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// 切换卡片编辑表单显示
+function toggleCardEdit(cardId) {
+    var el = document.getElementById('edit-card-' + cardId);
+    if (el) {
+        el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+    }
+}
+</script>
+{% endblock %}

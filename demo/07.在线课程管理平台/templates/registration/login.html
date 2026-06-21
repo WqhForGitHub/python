@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}登录 - 在线课程平台{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white text-center">
+                <h4 class="mb-0"><i class="bi bi-box-arrow-in-right"></i> 用户登录</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label">用户名</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                        <div class="text-danger small">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">密码</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                        <div class="text-danger small">{{ form.password.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right"></i> 登录
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-white text-center">
+                <small class="text-muted">
+                    还没有账号？<a href="{% url 'accounts:register' %}">立即注册</a>
+                </small>
+                <div class="mt-2">
+                    <small class="text-muted">
+                        提示：学员可浏览选课，教师可创建课程
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

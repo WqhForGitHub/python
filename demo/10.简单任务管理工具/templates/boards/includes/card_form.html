@@ -1,0 +1,40 @@
+{# 卡片内联添加表单 #}
+<div class="kanban-add-card">
+    <button class="btn btn-link btn-sm text-muted text-decoration-none add-card-toggle" type="button"
+            onclick="toggleCardAdd(this);">
+        <i class="bi bi-plus-lg"></i> 添加卡片
+    </button>
+    <form method="post" action="{% url 'boards:card_create' pk=column.pk %}" class="card-add-form mt-1" style="display:none;">
+        {% csrf_token %}
+        <div class="mb-1">
+            <input type="text" class="form-control form-control-sm" name="title" placeholder="卡片标题" required>
+        </div>
+        <div class="mb-1">
+            <textarea class="form-control form-control-sm" name="description" rows="2" placeholder="描述（可选）"></textarea>
+        </div>
+        <div class="mb-1">
+            <select class="form-select form-select-sm" name="assignee">
+                <option value="">未指派</option>
+                <option value="{{ column.board.owner.pk }}">{{ column.board.owner.username }}</option>
+                {% for m in column.board.members.all %}
+                    <option value="{{ m.pk }}">{{ m.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-1">
+            <select class="form-select form-select-sm" name="priority">
+                <option value="low">低</option>
+                <option value="medium" selected>中</option>
+                <option value="high">高</option>
+                <option value="urgent">紧急</option>
+            </select>
+        </div>
+        <div class="mb-1">
+            <input type="date" class="form-control form-control-sm" name="due_date">
+        </div>
+        <div class="mb-1">
+            <input type="text" class="form-control form-control-sm" name="labels" placeholder="标签，逗号分隔">
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary w-100">添加卡片</button>
+    </form>
+</div>

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ student.name }} - 学生详情{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+    <h2><i class="bi bi-person-circle"></i> {{ student.name }}</h2>
+    <div>
+        <a href="{% url 'students:student_list' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> 返回列表
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'students:grade_create' student.pk %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> 添加成绩
+        </a>
+        <a href="{% url 'students:student_edit' student.pk %}" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> 编辑
+        </a>
+        <a href="{% url 'students:student_delete' student.pk %}" class="btn btn-danger">
+            <i class="bi bi-trash"></i> 删除
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 基本信息 -->
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <i class="bi bi-info-circle"></i> 基本信息
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-2"><strong>学号：</strong>{{ student.student_no }}</div>
+            <div class="col-md-4 mb-2"><strong>性别：</strong>{{ student.get_gender_display }}</div>
+            <div class="col-md-4 mb-2"><strong>年龄：</strong>{{ student.age|default:'-' }}</div>
+            <div class="col-md-4 mb-2"><strong>班级：</strong>{{ student.class_name|default:'-' }}</div>
+            <div class="col-md-4 mb-2"><strong>电话：</strong>{{ student.phone|default:'-' }}</div>
+            <div class="col-md-4 mb-2"><strong>邮箱：</strong>{{ student.email|default:'-' }}</div>
+            <div class="col-md-6 mb-2"><strong>创建时间：</strong>{{ student.created_at|date:'Y-m-d H:i' }}</div>
+            <div class="col-md-6 mb-2"><strong>更新时间：</strong>{{ student.updated_at|date:'Y-m-d H:i' }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- 成绩列表 -->
+<div class="card">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-bar-chart"></i> 成绩列表</span>
+        <span class="text-muted small">
+            共 {{ grades|length }} 条
+            {% if avg_score %} · 平均分：{{ avg_score|floatformat:2 }}{% endif %}
+        </span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>科目</th>
+                    <th>分数</th>
+                    <th>考试日期</th>
+                    <th>录入时间</th>
+                    {% if user.is_authenticated %}<th class="text-end">操作</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for grade in grades %}
+                <tr>
+                    <td>{{ grade.subject }}</td>
+                    <td>
+                        {% if grade.score >= 90 %}
+                            <span class="badge bg-success">{{ grade.score|floatformat:1 }}</span>
+                        {% elif grade.score >= 60 %}
+                            <span class="badge bg-primary">{{ grade.score|floatformat:1 }}</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ grade.score|floatformat:1 }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ grade.exam_date|default:'-' }}</td>
+                    <td>{{ grade.created_at|date:'Y-m-d H:i' }}</td>
+                    {% if user.is_authenticated %}
+                    <td class="text-end">
+                        <a href="{% url 'students:grade_delete' grade.pk %}" class="btn btn-sm btn-outline-danger" title="删除成绩">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{% if user.is_authenticated %}5{% else %}4{% endif %}" class="text-center text-muted py-3">
+                        <i class="bi bi-inbox"></i> 暂无成绩记录
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
