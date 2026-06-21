@@ -13,8 +13,8 @@ class RegisterView(CreateView):
     """用户注册视图。"""
 
     form_class = UserRegisterForm
-    template_name = 'registration/register.html'
-    success_url = reverse_lazy('core:home')
+    template_name = "registration/register.html"
+    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -26,7 +26,7 @@ class UserLoginView(LoginView):
     """用户登录视图。"""
 
     form_class = UserLoginForm
-    template_name = 'registration/login.html'
+    template_name = "registration/login.html"
 
 
 class UserLogoutView(LogoutView):
@@ -40,8 +40,8 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
     model = User
     form_class = UserProfileForm
-    template_name = 'accounts/profile.html'
-    success_url = reverse_lazy('accounts:profile')
+    template_name = "accounts/profile.html"
+    success_url = reverse_lazy("accounts:profile")
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -49,12 +49,12 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 def register(request):
     """函数式注册视图（兼容用法）。"""
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('core:home')
+            return redirect("core:home")
     else:
         form = UserRegisterForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, "registration/register.html", {"form": form})

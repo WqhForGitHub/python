@@ -12,11 +12,11 @@ from django.urls import include, path
 from core import views as core_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('core.urls')),
-    path('accounts/', include('accounts.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("core.urls")),
+    path("accounts/", include("accounts.urls")),
 ]
 
 # 自定义错误处理器
-handler404 = 'core.views.handler404'
-handler500 = 'core.views.handler500'
+handler404 = "core.views.handler404"
+handler500 = "core.views.handler500"

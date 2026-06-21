@@ -17,22 +17,27 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Task
 from .serializers import task_to_dict
 
-
 # ============================================================
 # 允许排序的字段白名单（防止 SQL 注入）
 # ============================================================
 SORT_FIELDS = {
-    'created_at', '-created_at',
-    'updated_at', '-updated_at',
-    'title', '-title',
-    'completed', '-completed',
-    'id', '-id',
+    "created_at",
+    "-created_at",
+    "updated_at",
+    "-updated_at",
+    "title",
+    "-title",
+    "completed",
+    "-completed",
+    "id",
+    "-id",
 }
 
 
 # ============================================================
 # 工具函数
 # ============================================================
+
 
 def parse_json_body(request):
     """解析请求体中的 JSON 数据。
@@ -42,13 +47,13 @@ def parse_json_body(request):
     - 失败：data 为 None，error_response 为 JsonResponse
     """
     if not request.body:
-        return None, JsonResponse({'error': '请求体不能为空'}, status=400)
+        return None, JsonResponse({"error": "请求体不能为空"}, status=400)
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
-        return None, JsonResponse({'error': '请求体不是合法的 JSON'}, status=400)
+        return None, JsonResponse({"error": "请求体不是合法的 JSON"}, status=400)
     if not isinstance(data, dict):
-        return None, JsonResponse({'error': '请求体必须是一个 JSON 对象'}, status=400)
+        return None, JsonResponse({"error": "请求体必须是一个 JSON 对象"}, status=400)
     return data, None
 
 
@@ -67,30 +72,30 @@ def validate_task_data(data, partial=False):
     cleaned = {}
 
     # ---- title ----
-    title = data.get('title')
+    title = data.get("title")
     if title is None and not partial:
-        errors['title'] = '该字段为必填项'
+        errors["title"] = "该字段为必填项"
     elif title is not None:
         title = str(title).strip()
         if not title:
-            errors['title'] = '标题不能为空'
+            errors["title"] = "标题不能为空"
         elif len(title) > 200:
-            errors['title'] = '标题不能超过 200 个字符'
+            errors["title"] = "标题不能超过 200 个字符"
         else:
-            cleaned['title'] = title
+            cleaned["title"] = title
 
     # ---- description ----
-    description = data.get('description')
+    description = data.get("description")
     if description is not None:
-        cleaned['description'] = str(description)
+        cleaned["description"] = str(description)
 
     # ---- completed ----
-    completed = data.get('completed')
+    completed = data.get("completed")
     if completed is not None:
         if not isinstance(completed, bool):
-            errors['completed'] = '该字段必须为布尔值'
+            errors["completed"] = "该字段必须为布尔值"
         else:
-            cleaned['completed'] = completed
+            cleaned["completed"] = completed
 
     return cleaned, errors
 
@@ -113,16 +118,16 @@ def get_int_query_param(request, name, default, min_value=1, max_value=None):
 
 def json_error(message, status=400, errors=None):
     """构造统一的 JSON 错误响应。"""
-    body = {'error': message}
+    body = {"error": message}
     if errors:
-        body['errors'] = errors
+        body["errors"] = errors
     return JsonResponse(body, status=status)
 
 
 def method_not_allowed(request):
     """返回 405 Method Not Allowed。"""
     return json_error(
-        f'不支持的请求方法: {request.method}',
+        f"不支持的请求方法: {request.method}",
         status=405,
     )
 
@@ -131,6 +136,7 @@ def method_not_allowed(request):
 # API 视图
 # ============================================================
 
+
 @csrf_exempt
 def task_list(request):
     """任务列表 & 创建。
@@ -138,9 +144,9 @@ def task_list(request):
     GET  /api/tasks/  → 列表（支持分页 / 过滤 / 搜索 / 排序）
     POST /api/tasks/  → 创建
     """
-    if request.method == 'GET':
+    if request.method == "GET":
         return _task_list_get(request)
-    if request.method == 'POST':
+    if request.method == "POST":
         return _task_list_post(request)
     return method_not_allowed(request)
 
@@ -150,28 +156,29 @@ def _task_list_get(request):
     qs = Task.objects.all()
 
     # ---- 过滤：按完成状态 ----
-    completed = request.GET.get('completed')
+    completed = request.GET.get("completed")
     if completed is not None:
-        if completed.lower() == 'true':
+        if completed.lower() == "true":
             qs = qs.filter(completed=True)
-        elif completed.lower() == 'false':
+        elif completed.lower() == "false":
             qs = qs.filter(completed=False)
 
     # ---- 搜索：按标题模糊匹配 ----
-    search = request.GET.get('search')
+    search = request.GET.get("search")
     if search:
         qs = qs.filter(title__icontains=search)
 
     # ---- 排序 ----
-    sort = request.GET.get('sort', '-created_at')
+    sort = request.GET.get("sort", "-created_at")
     if sort not in SORT_FIELDS:
-        sort = '-created_at'
+        sort = "-created_at"
     qs = qs.order_by(sort)
 
     # ---- 分页 ----
-    page = get_int_query_param(request, 'page', default=1, min_value=1)
+    page = get_int_query_param(request, "page", default=1, min_value=1)
     page_size = get_int_query_param(
-        request, 'page_size',
+        request,
+        "page_size",
         default=settings.DEFAULT_PAGE_SIZE,
         min_value=1,
         max_value=settings.MAX_PAGE_SIZE,
@@ -180,13 +187,15 @@ def _task_list_get(request):
     paginator = Paginator(qs, page_size)
     page_obj = paginator.get_page(page)
 
-    return JsonResponse({
-        'count': paginator.count,
-        'page': page_obj.number,
-        'page_size': page_size,
-        'total_pages': paginator.num_pages,
-        'results': [task_to_dict(t) for t in page_obj],
-    })
+    return JsonResponse(
+        {
+            "count": paginator.count,
+            "page": page_obj.number,
+            "page_size": page_size,
+            "total_pages": paginator.num_pages,
+            "results": [task_to_dict(t) for t in page_obj],
+        }
+    )
 
 
 def _task_list_post(request):
@@ -197,7 +206,7 @@ def _task_list_post(request):
 
     cleaned, errors = validate_task_data(data)
     if errors:
-        return json_error('数据校验失败', errors=errors)
+        return json_error("数据校验失败", errors=errors)
 
     task = Task.objects.create(**cleaned)
     return JsonResponse(task_to_dict(task), status=201)
@@ -215,21 +224,21 @@ def task_detail(request, pk):
     try:
         task = Task.objects.get(pk=pk)
     except Task.DoesNotExist:
-        return json_error(f'任务不存在 (id={pk})', status=404)
+        return json_error(f"任务不存在 (id={pk})", status=404)
 
-    if request.method == 'GET':
+    if request.method == "GET":
         return JsonResponse(task_to_dict(task))
 
-    if request.method == 'PUT':
+    if request.method == "PUT":
         return _task_detail_update(request, task, partial=False)
 
-    if request.method == 'PATCH':
+    if request.method == "PATCH":
         return _task_detail_update(request, task, partial=True)
 
-    if request.method == 'DELETE':
+    if request.method == "DELETE":
         task.delete()
         return JsonResponse(
-            {'message': f'任务已删除 (id={pk})'},
+            {"message": f"任务已删除 (id={pk})"},
             status=200,
         )
 
@@ -244,7 +253,7 @@ def _task_detail_update(request, task, partial):
 
     cleaned, errors = validate_task_data(data, partial=partial)
     if errors:
-        return json_error('数据校验失败', errors=errors)
+        return json_error("数据校验失败", errors=errors)
 
     for field, value in cleaned.items():
         setattr(task, field, value)

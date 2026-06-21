@@ -7,10 +7,10 @@ def task_to_dict(task):
     日期时间字段转换为 ISO 8601 字符串，便于前端解析。
     """
     return {
-        'id': task.id,
-        'title': task.title,
-        'description': task.description,
-        'completed': task.completed,
-        'created_at': task.created_at.isoformat(),
-        'updated_at': task.updated_at.isoformat(),
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "completed": task.completed,
+        "created_at": task.created_at.isoformat(),
+        "updated_at": task.updated_at.isoformat(),
     }

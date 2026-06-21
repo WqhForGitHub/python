@@ -1,4 +1,5 @@
 """基于 session 的购物车实现。"""
+
 from decimal import Decimal
 
 from products.models import Product
@@ -15,10 +16,10 @@ class Cart:
     def __init__(self, request):
         """初始化购物车，从 session 中读取已有数据。"""
         self.session = request.session
-        cart = self.session.get('cart')
+        cart = self.session.get("cart")
         if not cart:
             # 初始化空购物车
-            cart = self.session['cart'] = {}
+            cart = self.session["cart"] = {}
         self.cart = cart
 
     def add(self, product, quantity=1, override_quantity=False):
@@ -58,9 +59,9 @@ class Cart:
         for product in products:
             quantity = self.cart[str(product.id)]
             yield {
-                'product': product,
-                'quantity': quantity,
-                'total_price': product.price * quantity,
+                "product": product,
+                "quantity": quantity,
+                "total_price": product.price * quantity,
             }
 
     def __len__(self):
@@ -72,15 +73,15 @@ class Cart:
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
         product_price_map = {p.id: p.price for p in products}
-        total = Decimal('0')
+        total = Decimal("0")
         for product_id, quantity in self.cart.items():
-            price = product_price_map.get(int(product_id), Decimal('0'))
+            price = product_price_map.get(int(product_id), Decimal("0"))
             total += price * quantity
         return total
 
     def clear(self):
         """清空购物车。"""
-        del self.session['cart']
+        del self.session["cart"]
         self.save()
 
     def save(self):

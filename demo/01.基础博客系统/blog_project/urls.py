@@ -10,9 +10,9 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('blog/', include('blog.urls')),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
+    path("blog/", include("blog.urls")),
     # 根路径重定向到博客首页
-    path('', RedirectView.as_view(url='/blog/', permanent=False), name='home'),
+    path("", RedirectView.as_view(url="/blog/", permanent=False), name="home"),
 ]

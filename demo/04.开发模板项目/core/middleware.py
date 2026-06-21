@@ -25,5 +25,5 @@ class RequestTimingMiddleware:
         response = self.get_response(request)
 
         duration_ms = (time.perf_counter() - start_time) * 1000
-        response['X-Request-Duration'] = f'{duration_ms:.2f}ms'
+        response["X-Request-Duration"] = f"{duration_ms:.2f}ms"
         return response

@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     # 学生与成绩相关的全部路由挂在根路径下
-    path('', include('students.urls')),
+    path("", include("students.urls")),
 ]

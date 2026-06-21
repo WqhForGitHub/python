@@ -8,8 +8,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         # 1. 创建学生表
@@ -26,7 +25,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.CharField(max_length=50, verbose_name="姓名")),
-                ("student_no", models.CharField(max_length=20, unique=True, verbose_name="学号")),
+                (
+                    "student_no",
+                    models.CharField(max_length=20, unique=True, verbose_name="学号"),
+                ),
                 (
                     "gender",
                     models.CharField(
@@ -36,12 +38,30 @@ class Migration(migrations.Migration):
                         verbose_name="性别",
                     ),
                 ),
-                ("age", models.IntegerField(blank=True, null=True, verbose_name="年龄")),
-                ("email", models.EmailField(blank=True, max_length=254, verbose_name="邮箱")),
-                ("phone", models.CharField(blank=True, max_length=20, verbose_name="电话")),
-                ("class_name", models.CharField(blank=True, max_length=50, verbose_name="班级")),
-                ("created_at", models.DateTimeField(auto_now_add=True, verbose_name="创建时间")),
-                ("updated_at", models.DateTimeField(auto_now=True, verbose_name="更新时间")),
+                (
+                    "age",
+                    models.IntegerField(blank=True, null=True, verbose_name="年龄"),
+                ),
+                (
+                    "email",
+                    models.EmailField(blank=True, max_length=254, verbose_name="邮箱"),
+                ),
+                (
+                    "phone",
+                    models.CharField(blank=True, max_length=20, verbose_name="电话"),
+                ),
+                (
+                    "class_name",
+                    models.CharField(blank=True, max_length=50, verbose_name="班级"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="创建时间"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="更新时间"),
+                ),
             ],
             options={
                 "verbose_name": "学生",
@@ -64,8 +84,14 @@ class Migration(migrations.Migration):
                 ),
                 ("subject", models.CharField(max_length=50, verbose_name="科目")),
                 ("score", models.FloatField(verbose_name="分数")),
-                ("exam_date", models.DateField(blank=True, null=True, verbose_name="考试日期")),
-                ("created_at", models.DateTimeField(auto_now_add=True, verbose_name="创建时间")),
+                (
+                    "exam_date",
+                    models.DateField(blank=True, null=True, verbose_name="考试日期"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="创建时间"),
+                ),
                 (
                     "student",
                     models.ForeignKey(

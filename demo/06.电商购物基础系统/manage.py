@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 """Django 命令行管理工具。"""
+
 import os
 import sys
 
 
 def main():
     """运行管理命令的入口函数。"""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shop_project.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "shop_project.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -16,5 +17,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

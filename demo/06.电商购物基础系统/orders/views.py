@@ -1,4 +1,5 @@
 """订单视图。"""
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -20,22 +21,22 @@ class OrderCreateView(LoginRequiredMixin, View):
         """展示订单创建表单。"""
         cart = Cart(request)
         if len(cart) == 0:
-            return redirect('cart:cart_detail')
+            return redirect("cart:cart_detail")
         form = OrderCreateForm()
         # 预填登录用户的邮箱与姓名
         if request.user.is_authenticated:
-            form.fields['email'].initial = request.user.email
+            form.fields["email"].initial = request.user.email
         return render(
             request,
-            'orders/order_create.html',
-            {'cart': cart, 'form': form},
+            "orders/order_create.html",
+            {"cart": cart, "form": form},
         )
 
     def post(self, request):
         """提交订单，生成订单与订单条目。"""
         cart = Cart(request)
         if len(cart) == 0:
-            return redirect('cart:cart_detail')
+            return redirect("cart:cart_detail")
         form = OrderCreateForm(request.POST)
         if form.is_valid():
             # 创建订单但不立即提交，需关联用户与总价
@@ -47,17 +48,17 @@ class OrderCreateView(LoginRequiredMixin, View):
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
-                    product=item['product'],
-                    price=item['product'].price,
-                    quantity=item['quantity'],
+                    product=item["product"],
+                    price=item["product"].price,
+                    quantity=item["quantity"],
                 )
             # 清空购物车
             cart.clear()
-            return redirect('orders:order_detail', pk=order.id)
+            return redirect("orders:order_detail", pk=order.id)
         return render(
             request,
-            'orders/order_create.html',
-            {'cart': cart, 'form': form},
+            "orders/order_create.html",
+            {"cart": cart, "form": form},
         )
 
 
@@ -67,7 +68,7 @@ class OrderDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
         """展示订单详情，仅允许查看本人订单。"""
         order = get_object_or_404(Order, pk=pk, user=request.user)
-        return render(request, 'orders/order_detail.html', {'order': order})
+        return render(request, "orders/order_detail.html", {"order": order})
 
 
 class OrderListView(LoginRequiredMixin, View):
@@ -76,7 +77,7 @@ class OrderListView(LoginRequiredMixin, View):
     def get(self, request):
         """展示用户订单列表。"""
         orders = Order.objects.filter(user=request.user)
-        return render(request, 'orders/order_list.html', {'orders': orders})
+        return render(request, "orders/order_list.html", {"orders": orders})
 
 
 # 模块级 url 友好的视图别名

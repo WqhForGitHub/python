@@ -15,10 +15,10 @@ class TimestampedModel(models.Model):
             ...
     """
 
-    created_at = models.DateTimeField('创建时间', auto_now_add=True)
-    updated_at = models.DateTimeField('更新时间', auto_now=True)
+    created_at = models.DateTimeField("创建时间", auto_now_add=True)
+    updated_at = models.DateTimeField("更新时间", auto_now=True)
 
     class Meta:
         abstract = True
-        verbose_name = '带时间戳的模型'
+        verbose_name = "带时间戳的模型"
         verbose_name_plural = verbose_name

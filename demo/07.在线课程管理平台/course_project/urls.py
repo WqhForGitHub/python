@@ -1,6 +1,7 @@
 """
 在线课程管理平台 - 根 URL 配置
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -8,13 +9,11 @@ from django.urls import include, path
 
 urlpatterns = [
     # 后台管理
-    path('admin/', admin.site.urls),
-
+    path("admin/", admin.site.urls),
     # 账户应用（登录、注册、个人资料）
-    path('accounts/', include('accounts.urls', namespace='accounts')),
-
+    path("accounts/", include("accounts.urls", namespace="accounts")),
     # 课程应用（前台课程浏览、选课、课时）
-    path('', include('courses.urls', namespace='courses')),
+    path("", include("courses.urls", namespace="courses")),
 ]
 
 # 开发模式下提供媒体文件访问
